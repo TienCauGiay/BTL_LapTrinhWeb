@@ -1,0 +1,44 @@
+﻿@model BanDoDienTu_Nhom06_N03.Models.DangNhap
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<h3>Bạn có chắc muốn xóa tài khoản này không?</h3>
+<div>
+    <hr />
+    <div class="table-responsive col-md-6">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>Tài khoản</td>
+                    <td class="text-dark font-weight-bold">@Model.TaiKhoan</td>
+                </tr>
+                <tr>
+                    <td>Mật khẩu</td>
+                    <td>@Model.MatKhau</td>
+                </tr>
+                <tr>
+                    <td>Quyền</td>
+                    <td class="text-dark font-weight-bold">@Model.RoleId</td>
+                </tr>
+                <tr>
+                    <td>Trạng thái</td>
+                    <td>@Model.Status</td>
+                </tr>
+                <tr>
+                    <td>Ngày tạo</td>
+                    <td>@Model.CreatedDate.Value.ToString("dd/MM/yyyy")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="TaiKhoan" />
+        <input type="submit" value="Xác nhận xóa" class="btn btn-danger" />
+        <br />
+        <br />
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
