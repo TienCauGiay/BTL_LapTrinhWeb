@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BanDoDienTu_Nhom06_N03.Models;
+using X.PagedList;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 {
@@ -14,16 +16,22 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
     {
         private readonly BanDoDienTuContext _context;
 
-        public ProductController(BanDoDienTuContext context)
+        public INotyfService _notyfService { get; }
+
+        public ProductController(BanDoDienTuContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;   
         }
 
         // GET: Admin/Product
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var banDoDienTuContext = _context.SanPhams.Include(s => s.MaDmNavigation).Include(s => s.MaSpNavigation);
-            return View(await banDoDienTuContext.ToListAsync());
+            int pageSize = 10;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var listProduct = _context.SanPhams.ToList();
+            PagedList<SanPham> res = new PagedList<SanPham>(listProduct, pageNumber, pageSize);
+            return View(res);
         }
 
         // GET: Admin/Product/Details/5
