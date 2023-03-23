@@ -1,5 +1,6 @@
 using AspNetCoreHero.ToastNotification;
 using BanDoDienTu_Nhom06_N03.Models;
+using BanDoDienTu_Nhom06_N03.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
@@ -16,6 +17,7 @@ builder.Services.AddNotyf(config => {
 
 var connectionString = builder.Configuration.GetConnectionString("dbBanDoDienTu");
 builder.Services.AddDbContext<BanDoDienTuContext>(x => x.UseSqlServer(connectionString));
+builder.Services.AddScoped<IDanhMucRepository, DanhMucRepository>();
 
 var app = builder.Build();
 

@@ -180,8 +180,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Product/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Product/ProductByCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxQcm9kdWN0QnlDYXRlZ29yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Shared/Components/DanhMucMenu/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcRGFuaE11Y01lbnVcRGVmYXVsdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Shared/Error.cshtml]
@@ -190,10 +198,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Shared/_FooterPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Gb290ZXJQYXJ0aWFsLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Shared/_MenuPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9NZW51UGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Shared/_TopbarPartial.cshtml]
