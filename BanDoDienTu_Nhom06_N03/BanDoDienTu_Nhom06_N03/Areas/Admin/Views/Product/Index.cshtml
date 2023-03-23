@@ -20,9 +20,6 @@
             <th>
                 Tên sản phẩm
             </th>
-            <th>
-                Giá sản phẩm
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,9 +34,6 @@
                     </td>
                     <td>
                         @item.TenSp
-                    </td>
-                    <td>
-                        @(item.GiaSp.HasValue ? @item.GiaSp.Value.ToString("N0") : "Liên hệ")
                     </td>
                     <td>
                         <a class="btn btn-inverse-info btn-tone m-r-5" asp-area="Admin" asp-controller="Product" asp-action="Details" asp-route-id="@item.MaSp">Chi tiết</a>

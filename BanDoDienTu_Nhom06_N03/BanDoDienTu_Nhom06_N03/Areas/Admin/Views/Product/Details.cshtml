@@ -5,51 +5,30 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>SanPham</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenSp)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenSp)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoLuong)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoLuong)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GiaSp)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GiaSp)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AnhSp)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnhSp)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaDmNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaDmNavigation.MaDm)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaSpNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaSpNavigation.MaSp)
-        </dd>
-    </dl>
+<div class="col-md-6">
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>Tên sản phẩm</td>
+                <td>@Html.DisplayFor(model => model.TenSp)</td>
+            </tr>
+            <tr>
+                <td>Số lượng</td>
+                <td>@Html.DisplayFor(model => model.SoLuong)</td>
+            </tr>
+            <tr>
+                <td>Giá sản phẩm</td>
+                <td>@Html.DisplayFor(model => model.GiaSp)</td>
+            </tr>
+            <tr>
+                <td>Ảnh sản phẩm</td>
+                <td>@Html.DisplayFor(model => model.AnhSp)</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaSp">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.MaDm">Sửa</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+

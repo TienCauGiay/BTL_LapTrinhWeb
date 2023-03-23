@@ -167,7 +167,27 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             var sanPham = await _context.SanPhams.FindAsync(id);
             if (sanPham != null)
             {
+                var cthdn = _context.ChiTietHdns.Where(x => x.MaSp == sanPham.MaSp).ToList();
+                if (cthdn != null)
+                {
+                    foreach(var item in cthdn)
+                    {
+                        _context.ChiTietHdns.Remove(item);
+                    }
+                    await _context.SaveChangesAsync();
+                }
+                var cthdb = _context.ChiTietHdbs.Where(x => x.MaSp == sanPham.MaSp).ToList();
+                if (cthdn != null)
+                {
+                    foreach (var item in cthdb)
+                    {
+                        _context.ChiTietHdbs.Remove(item);
+                    }
+                    await _context.SaveChangesAsync();
+                }
                 _context.SanPhams.Remove(sanPham);
+                var ctsp = _context.ChiTietSps.FirstOrDefault(x => x.MaSp == sanPham.MaSp);
+                if (ctsp != null) _context.ChiTietSps.Remove(ctsp);
             }
             
             await _context.SaveChangesAsync();
