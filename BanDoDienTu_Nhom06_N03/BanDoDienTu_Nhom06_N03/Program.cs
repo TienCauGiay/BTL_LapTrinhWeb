@@ -19,6 +19,8 @@ var connectionString = builder.Configuration.GetConnectionString("dbBanDoDienTu"
 builder.Services.AddDbContext<BanDoDienTuContext>(x => x.UseSqlServer(connectionString));
 builder.Services.AddScoped<IDanhMucRepository, DanhMucRepository>();
 
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +35,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

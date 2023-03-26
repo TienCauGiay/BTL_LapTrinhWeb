@@ -92,12 +92,12 @@
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3">@item.TenSp</h6>
                             <div class="d-flex justify-content-center">
-                                <h6>@(item.GiaSp.HasValue ? item.GiaSp.Value.ToString("N0") : "Liên hệ") VND</h6><h6 class="text-muted ml-2"><del>@(item.GiaSp.HasValue ? item.GiaSp.Value.ToString("N0") : "Liên hệ") VND</del></h6>
+                                <h6>@(item.GiaSp.HasValue ? item.GiaSp.Value.ToString("N0") : "Liên hệ") đ</h6><h6 class="text-muted ml-2"><del>@(item.GiaSp.HasValue ? item.GiaSp.Value.ToString("N0") : "Liên hệ") đ</del></h6>
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a asp-controller="Product" asp-action="Details" asp-route-id="@item.MaSp" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
-                            <a asp-controller="Cart" asp-action="AddToCart" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm Giỏ hàng</a>
+                            <a asp-controller="Cart" asp-action="AddToCart" asp-route-masp="@item.MaSp" asp-route-quantity="1" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm Giỏ hàng</a>
                         </div>
                     </div>
                 </div>
