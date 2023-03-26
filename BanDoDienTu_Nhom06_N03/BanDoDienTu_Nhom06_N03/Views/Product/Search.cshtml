@@ -2,7 +2,7 @@
 @model X.PagedList.IPagedList<SanPham>
 
 @{
-    ViewData["Title"] = "Trang chủ";
+    ViewData["Title"] = "Tìm kiếm sản phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -105,14 +105,14 @@
         }
     </div>
     <div class="pagination justify-content-center">
-        @Html.PagedListPager(Model,page => Url.Action("Index", new {page=page}),new X.PagedList.Web.Common.PagedListRenderOptions(){
+        @Html.PagedListPager(Model,page => Url.Action("Search", new {page=page
+        , searchString = ViewBag.SearchString}),new X.PagedList.Web.Common.PagedListRenderOptions(){
         LiElementClasses = new List<String> {"page-item"},
         PageClasses = new List<String> {"page-link"}
         })
     </div>
 </div>
 <!-- Products End -->
-
 @section vendor{
     <div class="container-fluid py-5">
         <div class="row px-xl-5">
@@ -154,6 +154,5 @@
         max-width: 100%;
         height: 200px;
     }
-
 </style>
 

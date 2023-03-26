@@ -15,7 +15,7 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
 
         public IActionResult ProductByCategory(int? page, string id)
         {
-            int pageSize = 16;
+            int pageSize = 8;
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
             var products = _context.SanPhams.Where(x => x.MaDm == id).ToList();
             PagedList<SanPham> res = new PagedList<SanPham>(products, pageNumber, pageSize);
@@ -50,6 +50,16 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             var product = _context.SanPhams.FirstOrDefault(x => x.MaSp == id);
             ViewBag.SanPhamTuongTu = _context.SanPhams.Where(x => x.MaDm == product.MaDm && x.MaSp != product.MaSp).ToList();
             return View(res.ToList());
+        }
+
+        public IActionResult Search(int? page, string searchString)
+        {
+            int pageSize = 8;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var products = _context.SanPhams.Where(x => x.TenSp.Contains(searchString)).ToList();
+            PagedList<SanPham> res = new PagedList<SanPham>(products, pageNumber, pageSize);
+            ViewBag.SearchString = searchString;
+            return View(res);
         }
     }
 }

@@ -2,7 +2,7 @@
 @model X.PagedList.IPagedList<SanPham>
 
 @{
-    ViewData["Title"] = "ProductByCategory";
+    ViewData["Title"] = "Sản phẩm theo loại";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -105,7 +105,7 @@
         }
     </div>
     <div class="pagination justify-content-center">
-        @Html.PagedListPager(Model,page => Url.Action("Index", new {page=page
+        @Html.PagedListPager(Model,page => Url.Action("ProductByCategory", new {page=page
         , id = ViewBag.MaDm}),new X.PagedList.Web.Common.PagedListRenderOptions(){
         LiElementClasses = new List<String> {"page-item"},
         PageClasses = new List<String> {"page-link"}
