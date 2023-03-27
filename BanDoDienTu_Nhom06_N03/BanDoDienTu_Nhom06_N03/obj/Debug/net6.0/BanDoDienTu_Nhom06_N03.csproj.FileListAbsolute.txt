@@ -572,3 +572,5 @@ F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\bi
 F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\obj\Debug\net6.0\BanDoDienTu_Nhom06_N03.MvcApplicationPartsAssemblyInfo.cs
 F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\obj\Debug\net6.0\BanDoDienTu_Nhom06_N03.csproj.CopyComplete
+F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\bin\Debug\net6.0\Microsoft.Extensions.PlatformAbstractions.dll
+F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\bin\Debug\net6.0\Nancy.dll

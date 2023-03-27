@@ -4,6 +4,8 @@ using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using Nancy.Json;
 
 namespace BanDoDienTu_Nhom06_N03.Controllers
 {
@@ -85,5 +87,26 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
         {
             return View();
         }
+
+        public ActionResult Remove(string id)
+        {
+            var giohang = HttpContext.Session.GetString(GIOHANG) ?? string.Empty;
+            var cart = JsonConvert.DeserializeObject<List<CartItem>>(giohang);
+
+            if (cart != null)
+            {
+                var itemToRemove = cart.SingleOrDefault(item => item.Product.MaSp == id);
+
+                if (itemToRemove != null)
+                {
+                    cart.Remove(itemToRemove);
+                    var cartJson = JsonConvert.SerializeObject(cart);
+                    HttpContext.Session.SetString(GIOHANG, cartJson);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
