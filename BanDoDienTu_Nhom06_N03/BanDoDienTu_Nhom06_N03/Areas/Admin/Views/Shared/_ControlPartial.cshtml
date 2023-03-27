@@ -20,13 +20,14 @@
                 <i class="mdi mdi-home menu-icon"></i>
             </a>
         </li>
+        <
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
                 <span class="menu-title">Quản lí bán hàng</span>
-                <i class="menu-arrow"></i>
+                <i class="menu-arrow" id="menu1"></i>
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
-            <div class="collapse" id="general-pages">
+            <div class="collapse" id="general-pages1">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index"> Sản phẩm </a></li>
                     <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index"> Đơn hàng </a></li>
@@ -39,10 +40,10 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
                 <span class="menu-title">Quản lí hệ thống</span>
-                <i class="menu-arrow"></i>
+                <i class="menu-arrow" id="menu2"></i>
                 <i class="mdi mdi-account menu-icon"></i>
             </a>
-            <div class="collapse" id="general-pages">
+            <div class="collapse" id="general-pages2">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="Account" asp-action="Index"> Quản lí tài khoản </a></li>
                     <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="Roles" asp-action="Index"> Quản lí quyền truy cập </a></li>
@@ -51,3 +52,16 @@
         </li>
     </ul>
 </nav>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#menu1").click(function () {
+            $("#general-pages1").toggle("slow");
+        });
+    });
+     $(document).ready(function () {
+            $("#menu2").click(function () {
+                $("#general-pages2").toggle("slow");
+            });
+        });
+</script>
