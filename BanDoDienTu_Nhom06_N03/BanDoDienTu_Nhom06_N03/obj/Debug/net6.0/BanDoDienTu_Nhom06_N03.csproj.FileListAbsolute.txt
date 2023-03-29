@@ -574,3 +574,4 @@ F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\ob
 F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\obj\Debug\net6.0\BanDoDienTu_Nhom06_N03.csproj.CopyComplete
 F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\bin\Debug\net6.0\Microsoft.Extensions.PlatformAbstractions.dll
 F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\bin\Debug\net6.0\Nancy.dll
+F:\DHGTVT\LapTrinhWeb\BaiTapLon\BanDoDienTu_Nhom06_N03\BanDoDienTu_Nhom06_N03\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
