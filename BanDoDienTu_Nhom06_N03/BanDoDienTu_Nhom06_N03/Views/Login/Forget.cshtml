@@ -32,25 +32,19 @@
                             <div class="brand-logo">
                                 <img src="~/adminassets/images/admin_shop.svg" />
                             </div>
-                            @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+                            @using (Html.BeginForm("Forget", "Login", FormMethod.Post))
                             {
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="form-group">
                                     @Html.TextBoxFor(x => x.TaiKhoan, new {@class="form-control form-control-lg", placeholder="Tên đăng nhập", required="required", autofocus="autofocus"})
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(x => x.MatKhau, new {@class="form-control form-control-lg", placeholder="Mật khẩu", required="required", autofocus="autofocus", type="Password"})
+                                    @Html.TextBoxFor(x => x.MatKhau, new {@class="form-control form-control-lg", placeholder="Mật khẩu mới", required="required", autofocus="autofocus", type="Password"})
                                 </div>
                                 <div class="mt-3">
                                     <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-bold">
-                                        Đăng nhập
+                                        Lưu thay đổi
                                     </button>
-                                </div>
-                                <div class="my-2 d-flex justify-content-between align-items-center">
-                                    <a asp-controller="Login" asp-action="Forget" class="auth-link text-black">Quên mật khẩu</a>
-                                </div>
-                                <div class="my-2 d-flex justify-content-between align-items-center">
-                                    <a asp-controller="Login" asp-action="Register" class="text-primary">Đăng kí</a>
                                 </div>
                             }
                         </div>

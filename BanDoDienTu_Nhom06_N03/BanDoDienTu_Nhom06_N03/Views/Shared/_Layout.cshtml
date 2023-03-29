@@ -1,4 +1,7 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpContextAccessor
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,8 +53,15 @@
                             <a asp-controller="Home" asp-action="Contact" class="nav-item nav-link">Liên hệ</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="" class="nav-item nav-link">Đăng nhập</a>
-                            <a href="" class="nav-item nav-link">Đăng ký</a>
+                            @if (!string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("UserName")))
+                            {
+                                <a asp-controller="Login" asp-action="Logout" class="nav-item nav-link">Đăng xuất</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Login" asp-action="Index" class="nav-item nav-link">Đăng nhập</a>
+                                <a asp-controller="Login" asp-action="Register" class="nav-item nav-link">Đăng ký</a>
+                            }
                         </div>
                     </div>
                 </nav>
@@ -85,6 +95,7 @@
     <script src="~/Clientassets/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required:false)
     @RenderSection("jsFooter", required: false)
+    @await Component.InvokeAsync("Notyf")
 </body>
 
 </html>
