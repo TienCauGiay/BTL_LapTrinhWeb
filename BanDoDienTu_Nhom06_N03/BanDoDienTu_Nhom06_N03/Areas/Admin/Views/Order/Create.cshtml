@@ -1,25 +1,26 @@
-﻿@model BanDoDienTu_Nhom06_N03.Models.ChiTietHdb
+﻿@model BanDoDienTu_Nhom06_N03.Models.HoaDonBan
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>ChiTietHdb</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="MaHdb" class="control-label"></label>
-                <select asp-for="MaHdb" class ="form-control" asp-items="ViewBag.MaHdb"></select>
+                <input asp-for="MaHdb" class="form-control" />
+                <span asp-validation-for="MaHdb" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MaSp" class="control-label"></label>
-                <select asp-for="MaSp" class ="form-control" asp-items="ViewBag.MaSp"></select>
+                <label asp-for="MaKh" class="control-label"></label>
+                <select asp-for="MaKh" class ="form-control" asp-items="ViewBag.MaKh"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaNv" class="control-label"></label>
+                <select asp-for="MaNv" class ="form-control" asp-items="ViewBag.MaNv"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

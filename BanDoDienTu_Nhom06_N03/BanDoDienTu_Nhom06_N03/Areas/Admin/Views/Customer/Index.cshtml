@@ -1,48 +1,63 @@
-﻿@model IEnumerable<BanDoDienTu_Nhom06_N03.Models.KhachHang>
+﻿@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<KhachHang>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách khách hàng";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh sách khách hàng</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm khách hàng mới</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-bordered" style="border:5px solid white;">
+    <thead style="border:5px solid white;">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TenKh)
+                ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sdtkh)
+                Tên khách hàng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DiaChiKh)
+                Số điện thoại
+            </th>
+            <th>
+                Địa chỉ
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenKh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sdtkh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiaChiKh)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaKh">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaKh">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaKh">Delete</a>
-            </td>
-        </tr>
-}
+    <tbody style="border:5px solid white;">
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.MaKh
+                    </td>
+                    <td>
+                        @item.TenKh
+                    </td>
+                    <td>
+                        @item.Sdtkh
+                    </td>
+                    <td>
+                        @item.DiaChiKh
+                    </td>
+                    <td>
+                        <a class="btn btn-inverse-info btn-tone m-r-5" asp-area="Admin" asp-controller="Customer" asp-action="Details" asp-route-id="@item.MaKh">Chi tiết</a>
+                        <a class="btn btn-inverse-success btn-tone m-r-5" asp-area="Admin" asp-controller="Customer" asp-action="Edit" asp-route-id="@item.MaKh">Sửa</a>
+                        <a class="btn btn-inverse-dark btn-tone m-r-5" asp-area="Admin" asp-controller="Customer" asp-action="Delete" asp-route-id="@item.MaKh">Xóa</a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
+@Html.PagedListPager(Model,page => Url.Action("Index", new {page=page}),new X.PagedList.Web.Common.PagedListRenderOptions(){
+	LiElementClasses = new List<String> {"page-item"},
+	PageClasses = new List<String> {"page-link"}
+})

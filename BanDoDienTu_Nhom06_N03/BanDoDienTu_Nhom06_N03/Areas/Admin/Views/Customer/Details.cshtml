@@ -5,33 +5,26 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>KhachHang</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenKh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenKh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sdtkh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sdtkh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiaChiKh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DiaChiKh)
-        </dd>
-    </dl>
+<div class="col-md-6">
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>Tên khách hàng</td>
+                <td>@Html.DisplayFor(model => model.TenKh)</td>
+            </tr>
+            <tr>
+                <td>Số điện thoại</td>
+                <td>@Html.DisplayFor(model => model.Sdtkh)</td>
+            </tr>
+            <tr>
+                <td>Địa chỉ</td>
+                <td>@Html.DisplayFor(model => model.DiaChiKh)</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+<br />
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaKh">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.MaKh">Sửa</a> |
     <a asp-action="Index">Back to List</a>
 </div>

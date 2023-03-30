@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BanDoDienTu_Nhom06_N03.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using X.PagedList;
 
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 {
@@ -14,17 +16,22 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
     {
         private readonly BanDoDienTuContext _context;
 
-        public CustomerController(BanDoDienTuContext context)
+        public INotyfService _notyfService { get; }
+
+        public CustomerController(BanDoDienTuContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: Admin/Customer
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.KhachHangs != null ? 
-                          View(await _context.KhachHangs.ToListAsync()) :
-                          Problem("Entity set 'BanDoDienTuContext.KhachHangs'  is null.");
+            int pageSize = 5;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var listCustomer = _context.KhachHangs.ToList();
+            PagedList<KhachHang> res = new PagedList<KhachHang>(listCustomer, pageNumber, pageSize);
+            return View(res);
         }
 
         // GET: Admin/Customer/Details/5
@@ -60,9 +67,17 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(khachHang);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if(_context.KhachHangs.FirstOrDefault(x => x.MaKh == khachHang.MaKh) == null)
+                {
+                    _context.Add(khachHang);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Thêm khách hàng thành công");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notyfService.Success("Mã khách hàng đã tồn tại");
+                }
             }
             return View(khachHang);
         }
@@ -113,7 +128,12 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                _notyfService.Success("Sửa thành công");
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _notyfService.Success("Sửa không thành công");
             }
             return View(khachHang);
         }
@@ -152,6 +172,7 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 

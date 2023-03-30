@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BanDoDienTu_Nhom06_N03.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using X.PagedList;
 
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 {
@@ -14,43 +16,46 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
     {
         private readonly BanDoDienTuContext _context;
 
-        public OrderController(BanDoDienTuContext context)
+        public INotyfService _notyfService { get; }
+
+        public OrderController(BanDoDienTuContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: Admin/Order
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var banDoDienTuContext = _context.ChiTietHdbs.Include(c => c.MaHdbNavigation).Include(c => c.MaSpNavigation);
-            return View(await banDoDienTuContext.ToListAsync());
+            int pageSize = 5;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var listOrder = _context.HoaDonBans.ToList();
+            PagedList<HoaDonBan> res = new PagedList<HoaDonBan>(listOrder, pageNumber, pageSize);
+            return View(res);
         }
 
         // GET: Admin/Order/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.ChiTietHdbs == null)
+            if (id == null || _context.HoaDonBans == null)
             {
                 return NotFound();
             }
 
-            var chiTietHdb = await _context.ChiTietHdbs
-                .Include(c => c.MaHdbNavigation)
-                .Include(c => c.MaSpNavigation)
-                .FirstOrDefaultAsync(m => m.MaHdb == id);
-            if (chiTietHdb == null)
+            var hoaDonBan = await _context.HoaDonBans.FirstOrDefaultAsync(m => m.MaHdb == id);
+            if (hoaDonBan == null)
             {
                 return NotFound();
             }
 
-            return View(chiTietHdb);
+            return View(hoaDonBan);
         }
 
         // GET: Admin/Order/Create
         public IActionResult Create()
         {
-            ViewData["MaHdb"] = new SelectList(_context.HoaDonBans, "MaHdb", "MaHdb");
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp");
+            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh");
+            ViewData["MaNv"] = new SelectList(_context.NhanViens, "MaNv", "MaNv");
             return View();
         }
 
@@ -59,35 +64,35 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaHdb,MaSp,Slban")] ChiTietHdb chiTietHdb)
+        public async Task<IActionResult> Create([Bind("MaHdb,NgayBan,MaKh,MaNv,TongTien")] HoaDonBan hoaDonBan)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(chiTietHdb);
+                _context.Add(hoaDonBan);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaHdb"] = new SelectList(_context.HoaDonBans, "MaHdb", "MaHdb", chiTietHdb.MaHdb);
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp", chiTietHdb.MaSp);
-            return View(chiTietHdb);
+            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh", hoaDonBan.MaKh);
+            ViewData["MaNv"] = new SelectList(_context.NhanViens, "MaNv", "MaNv", hoaDonBan.MaNv);
+            return View(hoaDonBan);
         }
 
         // GET: Admin/Order/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.ChiTietHdbs == null)
+            if (id == null || _context.HoaDonBans == null)
             {
                 return NotFound();
             }
 
-            var chiTietHdb = await _context.ChiTietHdbs.FindAsync(id);
-            if (chiTietHdb == null)
+            var hoaDonBan = await _context.HoaDonBans.FindAsync(id);
+            if (hoaDonBan == null)
             {
                 return NotFound();
             }
-            ViewData["MaHdb"] = new SelectList(_context.HoaDonBans, "MaHdb", "MaHdb", chiTietHdb.MaHdb);
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp", chiTietHdb.MaSp);
-            return View(chiTietHdb);
+            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh", hoaDonBan.MaKh);
+            ViewData["MaNv"] = new SelectList(_context.NhanViens, "MaNv", "MaNv", hoaDonBan.MaNv);
+            return View(hoaDonBan);
         }
 
         // POST: Admin/Order/Edit/5
@@ -95,9 +100,9 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MaHdb,MaSp,Slban")] ChiTietHdb chiTietHdb)
+        public async Task<IActionResult> Edit(string id, [Bind("MaHdb,NgayBan,MaKh,MaNv,TongTien")] HoaDonBan hoaDonBan)
         {
-            if (id != chiTietHdb.MaHdb)
+            if (id != hoaDonBan.MaHdb)
             {
                 return NotFound();
             }
@@ -106,12 +111,12 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(chiTietHdb);
+                    _context.Update(hoaDonBan);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ChiTietHdbExists(chiTietHdb.MaHdb))
+                    if (!HoaDonBanExists(hoaDonBan.MaHdb))
                     {
                         return NotFound();
                     }
@@ -122,29 +127,29 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaHdb"] = new SelectList(_context.HoaDonBans, "MaHdb", "MaHdb", chiTietHdb.MaHdb);
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp", chiTietHdb.MaSp);
-            return View(chiTietHdb);
+            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh", hoaDonBan.MaKh);
+            ViewData["MaNv"] = new SelectList(_context.NhanViens, "MaNv", "MaNv", hoaDonBan.MaNv);
+            return View(hoaDonBan);
         }
 
         // GET: Admin/Order/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.ChiTietHdbs == null)
+            if (id == null || _context.HoaDonBans == null)
             {
                 return NotFound();
             }
 
-            var chiTietHdb = await _context.ChiTietHdbs
-                .Include(c => c.MaHdbNavigation)
-                .Include(c => c.MaSpNavigation)
+            var hoaDonBan = await _context.HoaDonBans
+                .Include(h => h.MaKhNavigation)
+                .Include(h => h.MaNvNavigation)
                 .FirstOrDefaultAsync(m => m.MaHdb == id);
-            if (chiTietHdb == null)
+            if (hoaDonBan == null)
             {
                 return NotFound();
             }
 
-            return View(chiTietHdb);
+            return View(hoaDonBan);
         }
 
         // POST: Admin/Order/Delete/5
@@ -152,23 +157,23 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.ChiTietHdbs == null)
+            if (_context.HoaDonBans == null)
             {
-                return Problem("Entity set 'BanDoDienTuContext.ChiTietHdbs'  is null.");
+                return Problem("Entity set 'BanDoDienTuContext.HoaDonBans'  is null.");
             }
-            var chiTietHdb = await _context.ChiTietHdbs.FindAsync(id);
-            if (chiTietHdb != null)
+            var hoaDonBan = await _context.HoaDonBans.FindAsync(id);
+            if (hoaDonBan != null)
             {
-                _context.ChiTietHdbs.Remove(chiTietHdb);
+                _context.HoaDonBans.Remove(hoaDonBan);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ChiTietHdbExists(string id)
+        private bool HoaDonBanExists(string id)
         {
-          return (_context.ChiTietHdbs?.Any(e => e.MaHdb == id)).GetValueOrDefault();
+          return (_context.HoaDonBans?.Any(e => e.MaHdb == id)).GetValueOrDefault();
         }
     }
 }
