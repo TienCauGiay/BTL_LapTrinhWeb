@@ -13,9 +13,9 @@ public partial class NhanVien
 
     public string? Sdtnv { get; set; }
 
-    public string? DiaChiKh { get; set; }
-
     public string? GioiTinh { get; set; }
+
+    public string? DiaChiNv { get; set; }
 
     public virtual ICollection<HoaDonBan> HoaDonBans { get; } = new List<HoaDonBan>();
 

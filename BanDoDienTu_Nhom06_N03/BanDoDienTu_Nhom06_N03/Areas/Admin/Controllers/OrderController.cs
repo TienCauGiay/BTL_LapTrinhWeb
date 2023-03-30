@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BanDoDienTu_Nhom06_N03.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BanDoDienTu_Nhom06_N03.Models;
-using AspNetCoreHero.ToastNotification.Abstractions;
 using X.PagedList;
 
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
@@ -24,156 +20,160 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             _notyfService = notyfService;
         }
 
-        // GET: Admin/Order
-        public async Task<IActionResult> Index(int? page)
+        public IActionResult Index(int? page)
         {
             int pageSize = 5;
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
-            var listOrder = _context.HoaDonBans.ToList();
-            PagedList<HoaDonBan> res = new PagedList<HoaDonBan>(listOrder, pageNumber, pageSize);
+            var listOrder = from hdb in _context.HoaDonBans
+                            join cthdb in _context.ChiTietHdbs
+                            on hdb.MaHdb equals cthdb.MaHdb
+                            into cthdbGroup from cthdb in cthdbGroup.DefaultIfEmpty()
+                            select new OrderModel()
+                            {
+                                MaHdb = hdb.MaHdb,
+                                NgayBan = hdb.NgayBan,
+                                MaKh = hdb.MaKh,
+                                MaNv = hdb.MaNv,
+                                MaSp = cthdb.MaSp,
+                                SlBan = cthdb.Slban,
+                                TongTien = hdb.TongTien
+                            };
+            listOrder.OrderBy(x => x.MaHdb).Distinct().ToList();
+            PagedList<OrderModel> res = new PagedList<OrderModel>(listOrder, pageNumber, pageSize);
             return View(res);
         }
 
-        // GET: Admin/Order/Details/5
-        public async Task<IActionResult> Details(string id)
+        public IActionResult Details(string mahdb, string masp)
         {
-            if (id == null || _context.HoaDonBans == null)
-            {
-                return NotFound();
-            }
-
-            var hoaDonBan = await _context.HoaDonBans.FirstOrDefaultAsync(m => m.MaHdb == id);
-            if (hoaDonBan == null)
-            {
-                return NotFound();
-            }
-
-            return View(hoaDonBan);
+            var listOrder = from hdb in _context.HoaDonBans
+                            join cthdb in _context.ChiTietHdbs
+                            on hdb.MaHdb equals cthdb.MaHdb
+                            select new OrderModel()
+                            {
+                                MaHdb = hdb.MaHdb,
+                                NgayBan = hdb.NgayBan,
+                                MaKh = hdb.MaKh,
+                                MaNv = hdb.MaNv,
+                                MaSp = cthdb.MaSp,
+                                SlBan = cthdb.Slban,
+                                TongTien = hdb.TongTien
+                            };
+            listOrder.OrderBy(x => x.MaHdb).Distinct().ToList();
+            var res = listOrder.FirstOrDefault(x => x.MaHdb== mahdb && x.MaSp == masp);
+            return View(res);   
         }
 
-        // GET: Admin/Order/Create
         public IActionResult Create()
         {
-            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh");
-            ViewData["MaNv"] = new SelectList(_context.NhanViens, "MaNv", "MaNv");
+            ViewData["MaKh"] = new SelectList(_context.KhachHangs.ToList(), "MaKh", "MaKh");
+            ViewData["MaNv"] = new SelectList(_context.NhanViens.ToList(), "MaNv", "MaNv");
+            ViewData["MaSp"] = new SelectList(_context.SanPhams.ToList(), "MaSp", "MaSp");
+            ViewData["MaHdb"] = new SelectList(_context.HoaDonBans.ToList(), "MaHdb", "MaHdb");
             return View();
         }
 
-        // POST: Admin/Order/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaHdb,NgayBan,MaKh,MaNv,TongTien")] HoaDonBan hoaDonBan)
+        public IActionResult CreateOrder(OrderModel order)
         {
-            if (ModelState.IsValid)
+            if (_context.HoaDonBans.FirstOrDefault(x => x.MaHdb == order.MaHdb) == null)
             {
-                _context.Add(hoaDonBan);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                HoaDonBan h = new HoaDonBan()
+                {
+                    MaHdb = order.MaHdb,
+                    NgayBan = DateTime.Now,
+                    MaKh = order.MaKh,
+                    MaNv = order.MaNv,
+                    TongTien = order.TongTien
+                };
+                _context.HoaDonBans.Add(h);
+                _context.SaveChangesAsync();
+                _notyfService.Success("Thêm đơn hàng thành công");
+                return RedirectToAction("Index");
             }
-            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh", hoaDonBan.MaKh);
-            ViewData["MaNv"] = new SelectList(_context.NhanViens, "MaNv", "MaNv", hoaDonBan.MaNv);
-            return View(hoaDonBan);
+            else
+            {
+                _notyfService.Success("Mã hóa đơn đã tồn tại");
+            }
+            ViewData["MaKh"] = new SelectList(_context.KhachHangs.ToList(), "MaKh", "MaKh");
+            ViewData["MaNv"] = new SelectList(_context.NhanViens.ToList(), "MaNv", "MaNv");
+            ViewData["MaSp"] = new SelectList(_context.SanPhams.ToList(), "MaSp", "MaSp");
+            ViewData["MaHdb"] = new SelectList(_context.HoaDonBans.ToList(), "MaHdb", "MaHdb");
+            return View(order);
         }
 
-        // GET: Admin/Order/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null || _context.HoaDonBans == null)
-            {
-                return NotFound();
-            }
-
-            var hoaDonBan = await _context.HoaDonBans.FindAsync(id);
-            if (hoaDonBan == null)
-            {
-                return NotFound();
-            }
-            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh", hoaDonBan.MaKh);
-            ViewData["MaNv"] = new SelectList(_context.NhanViens, "MaNv", "MaNv", hoaDonBan.MaNv);
-            return View(hoaDonBan);
-        }
-
-        // POST: Admin/Order/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MaHdb,NgayBan,MaKh,MaNv,TongTien")] HoaDonBan hoaDonBan)
+        public IActionResult CreateOrderDetails(OrderModel order)
         {
-            if (id != hoaDonBan.MaHdb)
+            if (_context.ChiTietHdbs.FirstOrDefault(x => x.MaHdb == order.MaHdb && x.MaSp == order.MaSp) == null)
             {
-                return NotFound();
+                ChiTietHdb ct = new ChiTietHdb()
+                {
+                    MaHdb = order.MaHdb,
+                    MaSp= order.MaSp,
+                    Slban = order.SlBan
+                };
+                _context.ChiTietHdbs.Add(ct);
+                _context.SaveChangesAsync();
+                _notyfService.Success("Thêm chi tiết đơn hàng thành công");
+                return RedirectToAction("Index");
             }
-
-            if (ModelState.IsValid)
+            else
             {
-                try
-                {
-                    _context.Update(hoaDonBan);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!HoaDonBanExists(hoaDonBan.MaHdb))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _notyfService.Success("Chi tiết đơn hàng đã tồn tại");
             }
-            ViewData["MaKh"] = new SelectList(_context.KhachHangs, "MaKh", "MaKh", hoaDonBan.MaKh);
-            ViewData["MaNv"] = new SelectList(_context.NhanViens, "MaNv", "MaNv", hoaDonBan.MaNv);
-            return View(hoaDonBan);
+            ViewData["MaKh"] = new SelectList(_context.KhachHangs.ToList(), "MaKh", "MaKh");
+            ViewData["MaNv"] = new SelectList(_context.NhanViens.ToList(), "MaNv", "MaNv");
+            ViewData["MaSp"] = new SelectList(_context.SanPhams.ToList(), "MaSp", "MaSp");
+            ViewData["MaHdb"] = new SelectList(_context.HoaDonBans.ToList(), "MaHdb", "MaHdb");
+            return View(order);
         }
 
-        // GET: Admin/Order/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public IActionResult Edit(string mahdb, string masp)
         {
-            if (id == null || _context.HoaDonBans == null)
-            {
-                return NotFound();
-            }
-
-            var hoaDonBan = await _context.HoaDonBans
-                .Include(h => h.MaKhNavigation)
-                .Include(h => h.MaNvNavigation)
-                .FirstOrDefaultAsync(m => m.MaHdb == id);
-            if (hoaDonBan == null)
-            {
-                return NotFound();
-            }
-
-            return View(hoaDonBan);
+            ViewData["MaKh"] = new SelectList(_context.KhachHangs.ToList(), "MaKh", "MaKh");
+            ViewData["MaNv"] = new SelectList(_context.NhanViens.ToList(), "MaNv", "MaNv");
+            var res = (from hdb in _context.HoaDonBans
+                      join cthdb in _context.ChiTietHdbs
+                      on hdb.MaHdb equals cthdb.MaHdb
+                      where hdb.MaHdb == mahdb && cthdb.MaSp == masp
+                      select new OrderModel()
+                      {
+                          MaHdb = hdb.MaHdb,
+                          NgayBan = hdb.NgayBan,
+                          MaKh = hdb.MaKh,
+                          MaNv = hdb.MaNv,
+                          MaSp = cthdb.MaSp,
+                          SlBan = cthdb.Slban,
+                          TongTien = hdb.TongTien
+                      }).FirstOrDefault();
+            return View(res);
         }
 
-        // POST: Admin/Order/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public IActionResult EditOrder(OrderModel order)
         {
-            if (_context.HoaDonBans == null)
-            {
-                return Problem("Entity set 'BanDoDienTuContext.HoaDonBans'  is null.");
-            }
-            var hoaDonBan = await _context.HoaDonBans.FindAsync(id);
-            if (hoaDonBan != null)
-            {
-                _context.HoaDonBans.Remove(hoaDonBan);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var hdb = _context.HoaDonBans.FirstOrDefault(x => x.MaHdb == order.MaHdb);
+            hdb.NgayBan = order.NgayBan;
+            hdb.MaKh = order.MaKh;
+            hdb.MaNv= order.MaNv;
+            hdb.TongTien = order.TongTien;
+            _context.SaveChangesAsync();
+            _notyfService.Success("Sửa đơn hàng thành công");
+            return RedirectToAction("Index");
         }
 
-        private bool HoaDonBanExists(string id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditOrderDetails(OrderModel order)
         {
-          return (_context.HoaDonBans?.Any(e => e.MaHdb == id)).GetValueOrDefault();
+            var cthdb = _context.ChiTietHdbs.FirstOrDefault(x => x.MaHdb == order.MaHdb && x.MaSp == order.MaSp);
+            cthdb.Slban = order.SlBan;
+            _context.SaveChangesAsync();
+            _notyfService.Success("Sửa chi tiết đơn hàng thành công");
+            return RedirectToAction("Index");
         }
     }
 }

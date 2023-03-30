@@ -268,9 +268,9 @@ public partial class BanDoDienTuContext : DbContext
             entity.Property(e => e.MaNv)
                 .HasMaxLength(20)
                 .HasColumnName("MaNV");
-            entity.Property(e => e.DiaChiKh)
+            entity.Property(e => e.DiaChiNv)
                 .HasMaxLength(100)
-                .HasColumnName("DiaChiKH");
+                .HasColumnName("DiaChiNV");
             entity.Property(e => e.GioiTinh).HasMaxLength(20);
             entity.Property(e => e.HoTen).HasMaxLength(100);
             entity.Property(e => e.NgaySinh)

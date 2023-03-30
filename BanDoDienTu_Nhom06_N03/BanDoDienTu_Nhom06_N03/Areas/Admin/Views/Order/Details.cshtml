@@ -1,34 +1,53 @@
-﻿@model BanDoDienTu_Nhom06_N03.Models.HoaDonBan
-
+﻿@model OrderModel
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="col-md-6">
-    <table class="table table-striped">
-        <tbody>
-            <tr>
-                <td>Nhân viên</td>
-                <td>@Model.MaNv</td>
-            </tr>
-            <tr>
-                <td>Khách hàng</td>
-                <td>@Model.MaKh</td>
-            </tr>
-            <tr>
-                <td>Ngày bán</td>
-                <td>@Model.NgayBan.Value.ToString("dd/MM/yyyy")</td>
-            </tr>
-            <tr>
-                <td>Tổng tiền</td>
-                <td>@Model.TongTien.Value.ToString("N0") đ</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+@if(Model != null)
+{
+    <h2>Chi tiết đơn hàng</h2>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaHdb">Sửa</a> |
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>Ngày bán</td>
+                    <td>@Model.NgayBan.Value.ToString("dd/MM/yyyy")</td>
+                </tr>
+                <tr>
+                    <td>Mã khách hàng</td>
+                    <td>@Model.MaKh</td>
+                </tr>
+                <tr>
+                    <td>Mã nhân viên</td>
+                    <td>@Model.MaNv</td>
+                </tr>
+                <tr>
+                    <td>Mã sản phẩm</td>
+                    <td>@Model.MaSp</td>
+                </tr>
+                <tr>
+                    <td>Số lượng bán</td>
+                    <td>@Model.SlBan</td>
+                </tr>
+                <tr>
+                    <td>Tổng tiền</td>
+                    <td>@Model.TongTien.Value.ToString("N0")đ</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-mahdb="@Model?.MaHdb">Sửa</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+}
+else
+{
+    <h2 class="alert-danger">Chưa có chi tiết đơn hàng cho đơn hàng này</h2>
     <a asp-action="Index">Back to List</a>
-</div>
+}
+
+
+

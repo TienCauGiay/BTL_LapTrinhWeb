@@ -1,12 +1,12 @@
 ﻿@using X.PagedList.Mvc.Core;
-@model X.PagedList.IPagedList<HoaDonBan>
+@model X.PagedList.IPagedList<OrderModel>
 
 @{
     ViewData["Title"] = "Danh sách đơn hàng";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Danh sách đơn hàng</h1>
+<h2>Danh sách đơn hàng</h2>
 
 <p>
     <a asp-action="Create">Thêm đơn hàng mới</a>
@@ -15,7 +15,10 @@
     <thead style="border:5px solid white;">
         <tr>
             <th>
-                ID
+                Mã đơn hàng
+            </th>
+            <th>
+                Mã sản phẩm
             </th>
             <th>
                 Ngày bán
@@ -27,31 +30,37 @@
         </tr>
     </thead>
     <tbody style="border:5px solid white;">
-        @if(Model != null)
+        @if (Model != null)
         {
-            @foreach (var item in Model)
+            foreach (var item in Model)
             {
                 <tr>
                     <td>
                         @item.MaHdb
                     </td>
                     <td>
+                        @item.MaSp
+                    </td>
+                    <td>
                         @item.NgayBan.Value.ToString("dd/MM/yyyy")
                     </td>
                     <td>
-                        @item.TongTien.Value.ToString("N0") đ
+                        @item.TongTien.Value.ToString("N0")đ
                     </td>
                     <td>
-                        <a class="btn btn-inverse-info btn-tone m-r-5" asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@item.MaHdb">Chi tiết</a>
-                        <a class="btn btn-inverse-success btn-tone m-r-5" asp-area="Admin" asp-controller="Order" asp-action="Edit" asp-route-id="@item.MaHdb">Sửa</a>
-                        <a class="btn btn-inverse-dark btn-tone m-r-5" asp-area="Admin" asp-controller="Order" asp-action="Delete" asp-route-id="@item.MaHdb">Xóa</a>
+                        <a class="btn btn-inverse-info btn-tone m-r-5" asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-mahdb="@item.MaHdb" asp-route-masp="@item.MaSp">Chi tiết</a>
+                        <a class="btn btn-inverse-success btn-tone m-r-5" asp-area="Admin" asp-controller="Order" asp-action="Edit" asp-route-mahdb="@item.MaHdb" asp-route-masp="@item.MaSp">Sửa</a>
+                        <a class="btn btn-inverse-dark btn-tone m-r-5" asp-area="Admin" asp-controller="Order" asp-action="Delete" asp-route-mahdb="@item.MaHdb" asp-route-masp="@item.MaSp">Xóa</a>
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+<br />
 @Html.PagedListPager(Model,page => Url.Action("Index", new {page=page}),new X.PagedList.Web.Common.PagedListRenderOptions(){
 	LiElementClasses = new List<String> {"page-item"},
 	PageClasses = new List<String> {"page-link"}
 })
+
+
