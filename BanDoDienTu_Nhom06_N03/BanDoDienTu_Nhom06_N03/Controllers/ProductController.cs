@@ -20,6 +20,7 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             var products = _context.SanPhams.Where(x => x.MaDm == id).ToList();
             PagedList<SanPham> res = new PagedList<SanPham>(products, pageNumber, pageSize);
             ViewBag.MaDm = id;
+            ViewBag.IsHome = true;
             return View(res);
         }
 
