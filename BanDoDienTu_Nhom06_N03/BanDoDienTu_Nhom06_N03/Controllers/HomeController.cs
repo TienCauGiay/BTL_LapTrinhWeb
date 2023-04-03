@@ -21,6 +21,8 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
             var listProduct = _context.SanPhams.OrderBy(x => x.GiaSp).ToList();
             PagedList<SanPham> res = new PagedList<SanPham>(listProduct, pageNumber, pageSize);
+            ViewBag.IsHome = true;
+
             return View(res);
         }
 

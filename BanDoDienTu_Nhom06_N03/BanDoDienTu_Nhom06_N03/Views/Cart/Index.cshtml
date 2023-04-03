@@ -44,20 +44,20 @@
                                 <td class="align-middle">
                                     <div class="input-group quantity mx-auto" style="width: 100px;">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-minus">
-                                                <i class="fa fa-minus"></i>
+                                            <button class="btn btn-sm btn-primary btn-minus" data-id="@item.Product.MaSp">
+                                                <i class="fa fa-minus btn-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" class="form-control form-control-sm bg-secondary text-center" value="@item.Quantity">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-plus">
-                                                <i class="fa fa-plus"></i>
+                                        <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" data-price="@item.Product.GiaSp.GetValueOrDefault(0)" value="@item.Quantity">                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-primary btn-plus" data-id="@item.Product.MaSp">
+                                                <i class="fa fa-plus btn-plus"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="align-middle total">@((item.Product.GiaSp.GetValueOrDefault(0) * item.Quantity).ToString("N0") + "đ")</td>
+                                <td class="align-middle total"><span class="total-price">@((item.Product.GiaSp.GetValueOrDefault(0) * item.Quantity).ToString("N0"))</span>đ</td>
                                 <td class="align-middle"><button class="btn btn-sm btn-primary remove-item" data-id="@item.Product.MaSp"><i class="fa fa-times"></i></button></td>
+
                             </tr>
                         }
                     }
@@ -71,12 +71,13 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Số sản phẩm đã chọn</h6>
-                        <h6 class="font-weight-medium">@Model.Count</h6>
+                        <h6 class="font-weight-medium count-product-ss">Số sản phẩm đã chọn :@Model.Count</h6>
                     </div>
                     <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium">Tổng thanh toán</h6>
-                        <h6 class="font-weight-medium">@ViewBag.Total</h6>
+                        <h6 id="total-price-ss">Tổng giá trị : @ViewBag.Total</h6>
+
+                        @*                        <h6 class="font-weight-medium" id="total-price">@ViewBag.Total</h6>
+                        *@
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
@@ -87,27 +88,62 @@
     </div>
 </div>
 <!-- Cart End -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
     $(function () {
-        $('.remove-item').click(function (e) {
-            e.preventDefault();
+        $("input.quantity-input").on("keyup", function (e) {
+            if (e.keyCode === 13) { // check if the key pressed is "Enter"
+                var newquantity = parseInt($(this).val());
+                $(this).closest("tr").find(".quantity-input").val(newquantity);
+                var price = parseFloat($(this).closest("tr").find("td")[1].innerHTML);
+                const totalPrice = (newquantity * price * 1000).toLocaleString("vi-VN", { minimumFractionDigits: 0 });
+                $(this).closest("tr").find("td")[3].innerHTML = totalPrice.replace(/\./g, ',') + " đ";
+                $(".count-product-ss").html("Số sản phẩm đã chọn : " + newquantity.toString());
+                // Chọn phần tử thẻ h6 có id=total-price-ss
+                const totalPriceSS = document.getElementById('total-price-ss');
 
-            var id = $(this).data('id');
-            var url = '@Url.Action("Remove", "Cart")';
+                // Gán giá trị tổng vào phần tử HTML
+                totalPriceSS.innerText = "Tổng giá trị : " + totalPrice.replace(/\./g, ',') + " đ";
 
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: { id: id },
-                success: function (result) {
-                    // Refresh cart
-                    location.reload();
-                },
-                error: function (xhr, status, error) {
-                    console.log(error);
-                }
-            });
+                calculateTotal();
+            }
         });
+
+
+        $("button.btn-plus,button.btn-minus").click(function (event) {
+            event.preventDefault(); // prevent the default behavior of the button
+            console.log("Button clicked");
+            var id = $(this).data("id");
+            var input = $(this).closest(".input-group").find("input.quantity-input");
+            // update the quantity based on the button clicked
+            var newquantity = parseInt(input.val());
+            newquantity = Math.max(1, newquantity); // To ensure the newquantity is not less than 1
+            input.val(newquantity);
+            // update the total';
+
+            var price = parseFloat($(this).closest("tr").find("td")[1].innerHTML);
+            const totalPrice = (newquantity * price * 1000).toLocaleString("vi-VN", { minimumFractionDigits: 0 });
+            $(this).closest("tr").find("td")[3].innerHTML = totalPrice.replace(/\./g, ',') + " đ";
+            $(".count-product-ss").html("Số sản phẩm đã chọn : " + newquantity.toString());
+
+            // Chọn phần tử thẻ h6 có id=total-price-ss
+            const totalPriceSS = document.getElementById('total-price-ss');
+
+            // Gán giá trị tổng vào phần tử HTML
+            totalPriceSS.innerText = "Tổng giá trị : " + totalPrice.replace(/\./g, ',') + " đ";
+            calculateTotal();
+        });
+
+
+        function calculateTotal() {
+            var total = 0;
+            $(".total-price").each(function () {
+                total += parseFloat($(this).text().replace(/\./g, ','));
+            });
+
+        }
+
+        calculateTotal();
     });
 </script>
