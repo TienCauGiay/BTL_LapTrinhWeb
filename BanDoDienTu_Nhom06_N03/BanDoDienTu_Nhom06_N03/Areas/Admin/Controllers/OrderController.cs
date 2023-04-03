@@ -132,6 +132,11 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 
         public IActionResult Edit(string mahdb, string masp)
         {
+            if (masp == null)
+            {
+                _notyfService.Success("Đơn hàng chưa có chi tiết, không sửa được");
+                return RedirectToAction("Index");
+            }
             ViewData["MaKh"] = new SelectList(_context.KhachHangs.ToList(), "MaKh", "MaKh");
             ViewData["MaNv"] = new SelectList(_context.NhanViens.ToList(), "MaNv", "MaNv");
             var res = (from hdb in _context.HoaDonBans
@@ -153,27 +158,68 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditOrder(OrderModel order)
+        public async Task<IActionResult> EditOrder(OrderModel order)
         {
             var hdb = _context.HoaDonBans.FirstOrDefault(x => x.MaHdb == order.MaHdb);
-            hdb.NgayBan = order.NgayBan;
+            hdb.NgayBan = order.NgayBan.HasValue ? order.NgayBan.Value : DateTime.Now;
             hdb.MaKh = order.MaKh;
             hdb.MaNv= order.MaNv;
             hdb.TongTien = order.TongTien;
-            _context.SaveChangesAsync();
+            _context.Update(hdb);
+            await _context.SaveChangesAsync();
             _notyfService.Success("Sửa đơn hàng thành công");
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditOrderDetails(OrderModel order)
+        public async Task<IActionResult> EditOrderDetails(OrderModel order)
         {
             var cthdb = _context.ChiTietHdbs.FirstOrDefault(x => x.MaHdb == order.MaHdb && x.MaSp == order.MaSp);
             cthdb.Slban = order.SlBan;
-            _context.SaveChangesAsync();
+            _context.Update(cthdb);
+            await _context.SaveChangesAsync();
             _notyfService.Success("Sửa chi tiết đơn hàng thành công");
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string mahdb, string masp)
+        {
+            OrderModel res = new OrderModel();
+            var hdb = _context.HoaDonBans.FirstOrDefault(x => x.MaHdb == mahdb);
+            if(hdb != null)
+            {
+                res.MaHdb = mahdb;
+                res.MaSp = masp;
+                res.MaKh = hdb.MaKh;
+                res.MaNv= hdb.MaNv;
+                res.NgayBan = hdb.NgayBan;
+                res.TongTien = hdb.TongTien;
+                var cthdb = _context.ChiTietHdbs.FirstOrDefault(x => x.MaHdb == mahdb && x.MaSp == masp);
+                if(cthdb != null)
+                {
+                    res.SlBan = cthdb.Slban;
+                }
+            }
+
+            return View(res);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(string mahdb, string masp)
+        {
+            var cthdb = _context.ChiTietHdbs.Where(x => x.MaHdb == mahdb);
+            if(cthdb != null )
+            {
+                _context.ChiTietHdbs.RemoveRange(cthdb);
+            }
+            var hdb = _context.HoaDonBans.FirstOrDefault(x => x.MaHdb == mahdb);
+            if (hdb != null) _context.HoaDonBans.Remove(hdb);
+
+            await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa đơn hàng thành công");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

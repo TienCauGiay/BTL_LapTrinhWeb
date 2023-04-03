@@ -1,0 +1,53 @@
+﻿@model OrderModel
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Bạn có chắc muốn xóa đơn hàng này không?</h3>
+<div>
+    <hr />
+    <div class="table-responsive col-md-6">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>Mã đơn hàng</td>
+                    <td class="text-dark font-weight-bold">@Model.MaHdb</td>
+                </tr>
+                <tr>
+                    <td>Mật sản phẩm</td>
+                    <td>@Model.MaSp</td>
+                </tr>
+                <tr>
+                    <td>Ngày bán</td>
+                    <td class="text-dark font-weight-bold"> @(Model.NgayBan.HasValue ? Model.NgayBan.Value.ToString("dd/MM/yyyy") : DateTime.Now.ToString("dd/MM/yyyy"))</td>
+                </tr>
+                <tr>
+                    <td>Mã nhân viên</td>
+                    <td>@Model.MaNv</td>
+                </tr>
+                <tr>
+                    <td>Mã khách hàng</td>
+                    <td>@Model.MaKh</td>
+                </tr>
+                <tr>
+                    <td>Số lượng bán</td>
+                    <td>@Model.SlBan</td>
+                </tr>
+                <tr>
+                    <td>Tổng tiền</td>
+                    <td>@Model.TongTien</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="MaHdb" />
+        <input type="hidden" asp-for="MaSp" />
+        <input type="submit" value="Xác nhận xóa" class="btn btn-danger" />
+        <br />
+        <br />
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -42,7 +42,7 @@
                         @item.MaSp
                     </td>
                     <td>
-                        @item.NgayBan.Value.ToString("dd/MM/yyyy")
+                        @(item.NgayBan.HasValue ? item.NgayBan.Value.ToString("dd/MM/yyyy") : DateTime.Now.ToString("dd/MM/yyyy"))
                     </td>
                     <td>
                         @item.TongTien.Value.ToString("N0")đ
