@@ -144,3 +144,27 @@
         calculateTotal();
     });
 </script>
+
+<script>
+    $(function () {
+        $('.remove-item').click(function (e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+            var url = '@Url.Action("Remove", "Cart")';
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: { id: id },
+                success: function (result) {
+                    // Refresh cart
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
