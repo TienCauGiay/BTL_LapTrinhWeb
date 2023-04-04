@@ -89,64 +89,6 @@
 
 <script>
     $(function () {
-        $("input.quantity-input").on("keyup", function (e) {
-            if (e.keyCode === 13) { // check if the key pressed is "Enter"
-                var newquantity = parseInt($(this).val());
-                $(this).closest("tr").find(".quantity-input").val(newquantity);
-                var price = parseFloat($(this).closest("tr").find("td")[1].innerHTML);
-                const totalPrice = (newquantity * price * 1000).toLocaleString("vi-VN", { minimumFractionDigits: 0 });
-                $(this).closest("tr").find("td")[3].innerHTML = totalPrice.replace(/\./g, ',') + " đ";
-                $(".count-product-ss").html("Số sản phẩm đã chọn : " + newquantity.toString());
-                // Chọn phần tử thẻ h6 có id=total-price-ss
-                const totalPriceSS = document.getElementById('total-price-ss');
-
-                // Gán giá trị tổng vào phần tử HTML
-                totalPriceSS.innerText = "Tổng giá trị : " + totalPrice.replace(/\./g, ',') + " đ";
-
-                calculateTotal();
-            }
-        });
-
-
-        $("button.btn-plus,button.btn-minus").click(function (event) {
-            event.preventDefault(); // prevent the default behavior of the button
-            console.log("Button clicked");
-            var id = $(this).data("id");
-            var input = $(this).closest(".input-group").find("input.quantity-input");
-            // update the quantity based on the button clicked
-            var newquantity = parseInt(input.val());
-            newquantity = Math.max(1, newquantity); // To ensure the newquantity is not less than 1
-            input.val(newquantity);
-            // update the total';
-
-            var price = parseFloat($(this).closest("tr").find("td")[1].innerHTML);
-            const totalPrice = (newquantity * price * 1000).toLocaleString("vi-VN", { minimumFractionDigits: 0 });
-            $(this).closest("tr").find("td")[3].innerHTML = totalPrice.replace(/\./g, ',') + " đ";
-            $(".count-product-ss").html("Số sản phẩm đã chọn : " + newquantity.toString());
-
-            // Chọn phần tử thẻ h6 có id=total-price-ss
-            const totalPriceSS = document.getElementById('total-price-ss');
-
-            // Gán giá trị tổng vào phần tử HTML
-            totalPriceSS.innerText = "Tổng giá trị : " + totalPrice.replace(/\./g, ',') + " đ";
-            calculateTotal();
-        });
-
-
-        function calculateTotal() {
-            var total = 0;
-            $(".total-price").each(function () {
-                total += parseFloat($(this).text().replace(/\./g, ','));
-            });
-
-        }
-
-        calculateTotal();
-    });
-</script>
-
-<script>
-    $(function () {
         $('.remove-item').click(function (e) {
             e.preventDefault();
 
