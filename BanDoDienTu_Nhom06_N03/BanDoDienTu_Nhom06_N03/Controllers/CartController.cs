@@ -123,6 +123,9 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
                 total += item.Quantity * item.Product.GiaSp.GetValueOrDefault(0);
             }
             ViewBag.Total = total;
+            string user = HttpContext.Session.GetString("UserName");
+            var kh = _context.KhachHangs.FirstOrDefault(x => x.MaKh == user);
+            ViewBag.KhachHang = kh;
             return View(list);
         }
 
@@ -182,7 +185,19 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpPost]
+        public IActionResult UpdateUser(string tenKH, string diaChiKH, string sdtKH)
+        {
+            var user = HttpContext.Session.GetString("UserName");
+            var kh = _context.KhachHangs.FirstOrDefault(x => x.MaKh == user);
+            kh.TenKh = tenKH;
+            kh.DiaChiKh = diaChiKH;
+            kh.Sdtkh = sdtKH;
+            _context.KhachHangs.Update(kh);
+            _context.SaveChanges();
+            return RedirectToAction("Payment");
+        }
     }
 }
 
-// Phân quyền trước
