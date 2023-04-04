@@ -42,7 +42,7 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
                     {
                         return RedirectToAction("Index", "Home", new { area = "Admin" });
                     }
-                    _notyfService.Success("Đăng nhập thành công");
+                    _notyfService.Success("Đăng nhập thành công " + HttpContext.Session.GetString("UserName"));
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -70,7 +70,7 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(DangNhap user)
+        public IActionResult Register(DangNhap user, string hoten, string diachi, string dienthoai)
         {
             var res = _context.DangNhaps.FirstOrDefault(x => x.TaiKhoan == user.TaiKhoan);
             if(res != null)
@@ -82,6 +82,15 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             {
                 user.RoleId = "customer";
                 _context.DangNhaps.Add(user);
+                var kh = new KhachHang();
+                if(_context.KhachHangs.FirstOrDefault(x => x.MaKh == user.TaiKhoan) == null)
+                {
+                    kh.MaKh = user.TaiKhoan;
+                    kh.TenKh = hoten;
+                    kh.DiaChiKh = diachi;
+                    kh.Sdtkh = dienthoai;
+                    _context.KhachHangs.Add(kh);
+                }
                 _context.SaveChanges();
                 _notyfService.Success("Đăng kí thành công");
                 return RedirectToAction("Index", "Login");

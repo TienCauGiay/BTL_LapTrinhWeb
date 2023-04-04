@@ -74,14 +74,11 @@
                         <h6 class="font-weight-medium count-product-ss">Số sản phẩm đã chọn :@Model.Count</h6>
                     </div>
                     <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 id="total-price-ss">Tổng giá trị : @ViewBag.Total</h6>
-
-                        @*                        <h6 class="font-weight-medium" id="total-price">@ViewBag.Total</h6>
-                        *@
+                        <h6 id="total-price-ss">Tổng giá trị : @ViewBag.Total.ToString("N0")đ</h6>
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
-                    <button id="btnPayment" class="btn btn-block btn-primary my-3 py-3">Thanh toán</button>
+                    <a asp-controller="Cart" asp-action="Payment" class="btn btn-block btn-primary my-3 py-3">Thanh toán</a>
                 </div>
             </div>
         </div>

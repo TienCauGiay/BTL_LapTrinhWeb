@@ -1,6 +1,7 @@
 using AspNetCoreHero.ToastNotification;
 using BanDoDienTu_Nhom06_N03.Models;
 using BanDoDienTu_Nhom06_N03.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 

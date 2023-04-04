@@ -6,18 +6,21 @@ using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Nancy.Json;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace BanDoDienTu_Nhom06_N03.Controllers
 {
     public class CartController : Controller
     {
         BanDoDienTuContext _context = null;
+        public INotyfService _notyfService { get; }
 
         private const string GIOHANG = "GIOHANG";
 
-        public CartController(BanDoDienTuContext context)
+        public CartController(BanDoDienTuContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
         public IActionResult Index()
         {
@@ -83,11 +86,6 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Payment()
-        {
-            return View();
-        }
-
         public ActionResult Remove(string id)
         {
             var giohang = HttpContext.Session.GetString(GIOHANG) ?? string.Empty;
@@ -107,5 +105,84 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult Payment()
+        {
+
+            var giohang = HttpContext.Session.GetString(GIOHANG) ?? string.Empty;
+            var cart = JsonConvert.DeserializeObject<List<CartItem>>(giohang);
+            var list = new List<CartItem>();
+            if (cart != null)
+            {
+                list = cart;
+            }
+            var total = 0.0m;
+            foreach (var item in list)
+            {
+                total += item.Quantity * item.Product.GiaSp.GetValueOrDefault(0);
+            }
+            ViewBag.Total = total;
+            return View(list);
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmPayment()
+        {
+            var giohang = HttpContext.Session.GetString(GIOHANG) ?? string.Empty;
+            var cart = JsonConvert.DeserializeObject<List<CartItem>>(giohang);
+            var list = new List<CartItem>();
+            if (cart != null)
+            {
+                list = cart;
+            }
+            var total = 0.0m;
+            foreach (var item in list)
+            {
+                total += item.Quantity * item.Product.GiaSp.GetValueOrDefault(0);
+            }
+            string taiKhoan = HttpContext.Session.GetString("UserName");
+            string id = taiKhoan + DateTime.Now.ToString();
+            if (id.Length > 19) id = id.Substring(0, 19);
+            if (_context.HoaDonBans.FirstOrDefault(x => x.MaHdb == id) != null) id += "1";
+            var order = new HoaDonBan();
+            order.MaHdb = id;
+            order.NgayBan = DateTime.Now;
+            order.MaKh = taiKhoan;
+            order.MaNv = "robot";
+            order.TongTien = total;
+            _context.HoaDonBans.Add(order);
+            _context.SaveChanges();
+            try
+            {
+                foreach (var item in list)
+                {
+                    var sp = _context.SanPhams.FirstOrDefault(x => x.MaSp == item.Product.MaSp);
+                    if (sp.SoLuong >= item.Quantity)
+                    {
+                        ChiTietHdb ct = new ChiTietHdb();
+                        ct.MaHdb = id;
+                        ct.MaSp = item.Product.MaSp;
+                        ct.Slban = item.Quantity;
+                        _context.ChiTietHdbs.Add(ct);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        _notyfService.Error("Số lượng sản phẩm tại cửa hàng không đủ");
+                    }
+                }
+                HttpContext.Session.Remove("GIOHANG");
+                _notyfService.Success("Đặt hàng thành công");
+            }
+            catch (Exception ex)
+            {
+                _notyfService.Error("Lỗi đặt hàng, vui lòng kiểm tra lại");
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
+
+// Phân quyền trước
