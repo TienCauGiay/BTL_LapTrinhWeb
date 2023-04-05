@@ -1,48 +1,58 @@
-﻿@model IEnumerable<BanDoDienTu_Nhom06_N03.Models.ChiTietHdn>
+﻿@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<ChiTietHdn>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Danh sách chi tiết hóa đơn nhập</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm chi tiết hóa đơn nhập</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-bordered" style="border:5px solid white;">
+    <thead style="border:5px solid white;">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Slnhap)
+                ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaHdnNavigation)
+                Mã sản phẩm
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaSpNavigation)
+                Số lượng
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slnhap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaHdnNavigation.MaHdn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaSpNavigation.MaSp)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+    <tbody style="border:5px solid white;">
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.MaHdn
+                    </td>
+                    <td>
+                        @item.MaSp
+                    </td>
+                    <td>
+                        @item.Slnhap
+                    </td>
+                    <td>
+                        <a class="btn btn-inverse-info btn-tone m-r-5" asp-area="Admin" asp-controller="ImportOrderDetails" asp-action="Details" asp-route-mahdn="@item.MaHdn" asp-route-masp="@item.MaSp">Chi tiết</a>
+                        <a class="btn btn-inverse-success btn-tone m-r-5" asp-area="Admin" asp-controller="ImportOrderDetails" asp-action="Edit" asp-route-mahdn="@item.MaHdn" asp-route-masp="@item.MaSp">Sửa</a>
+                        <a class="btn btn-inverse-dark btn-tone m-r-5" asp-area="Admin" asp-controller="ImportOrderDetails" asp-action="Delete" asp-route-mahdn="@item.MaHdn" asp-route-masp="@item.MaSp">Xóa</a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
+<br />
+@Html.PagedListPager(Model,page => Url.Action("Index", new {page=page}),new X.PagedList.Web.Common.PagedListRenderOptions(){
+	LiElementClasses = new List<String> {"page-item"},
+	PageClasses = new List<String> {"page-link"}
+})

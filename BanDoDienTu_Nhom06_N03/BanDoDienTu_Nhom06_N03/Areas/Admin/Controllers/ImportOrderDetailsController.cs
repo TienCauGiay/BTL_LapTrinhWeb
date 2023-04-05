@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BanDoDienTu_Nhom06_N03.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using X.PagedList;
 
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 {
@@ -14,30 +16,31 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
     {
         private readonly BanDoDienTuContext _context;
 
-        public ImportOrderDetailsController(BanDoDienTuContext context)
+        public INotyfService _notyfService { get; }
+
+        public ImportOrderDetailsController(BanDoDienTuContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService= notyfService;
         }
 
         // GET: Admin/ImportOrderDetails
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var banDoDienTuContext = _context.ChiTietHdns.Include(c => c.MaHdnNavigation).Include(c => c.MaSpNavigation);
-            return View(await banDoDienTuContext.ToListAsync());
+            int pageSize = 10;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var listOrderDetails = _context.ChiTietHdns.ToList();
+            PagedList<ChiTietHdn> res = new PagedList<ChiTietHdn>(listOrderDetails, pageNumber, pageSize);
+            return View(res);
         }
 
         // GET: Admin/ImportOrderDetails/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string mahdn, string masp)
         {
-            if (id == null || _context.ChiTietHdns == null)
-            {
-                return NotFound();
-            }
-
             var chiTietHdn = await _context.ChiTietHdns
                 .Include(c => c.MaHdnNavigation)
                 .Include(c => c.MaSpNavigation)
-                .FirstOrDefaultAsync(m => m.MaHdn == id);
+                .FirstOrDefaultAsync(m => m.MaHdn == mahdn && m.MaSp == masp);
             if (chiTietHdn == null)
             {
                 return NotFound();
@@ -49,8 +52,8 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         // GET: Admin/ImportOrderDetails/Create
         public IActionResult Create()
         {
-            ViewData["MaHdn"] = new SelectList(_context.HoaDonNhaps, "MaHdn", "MaHdn");
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp");
+            ViewData["MaHdn"] = new SelectList(_context.HoaDonNhaps.ToList(), "MaHdn", "MaHdn");
+            ViewData["MaSp"] = new SelectList(_context.SanPhams.ToList(), "MaSp", "MaSp");
             return View();
         }
 
@@ -63,30 +66,29 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(chiTietHdn);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if(_context.ChiTietHdns.FirstOrDefault(x => x.MaHdn == chiTietHdn.MaHdn && x.MaSp == chiTietHdn.MaSp) == null)
+                {
+                    _context.Add(chiTietHdn);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Thêm thành công");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notyfService.Error("Chi tiết hóa đơn đã tồn tại");
+                }
             }
-            ViewData["MaHdn"] = new SelectList(_context.HoaDonNhaps, "MaHdn", "MaHdn", chiTietHdn.MaHdn);
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp", chiTietHdn.MaSp);
+            ViewData["MaHdn"] = new SelectList(_context.HoaDonNhaps.ToList(), "MaHdn", "MaHdn", chiTietHdn.MaHdn);
+            ViewData["MaSp"] = new SelectList(_context.SanPhams.ToList(), "MaSp", "MaSp", chiTietHdn.MaSp);
             return View(chiTietHdn);
         }
 
         // GET: Admin/ImportOrderDetails/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string mahdn, string masp)
         {
-            if (id == null || _context.ChiTietHdns == null)
-            {
-                return NotFound();
-            }
-
-            var chiTietHdn = await _context.ChiTietHdns.FindAsync(id);
-            if (chiTietHdn == null)
-            {
-                return NotFound();
-            }
-            ViewData["MaHdn"] = new SelectList(_context.HoaDonNhaps, "MaHdn", "MaHdn", chiTietHdn.MaHdn);
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp", chiTietHdn.MaSp);
+            var chiTietHdn = _context.ChiTietHdns.FirstOrDefault(x => x.MaHdn == mahdn && x.MaSp == masp);
+            ViewData["MaHdn"] = new SelectList(_context.HoaDonNhaps.ToList(), "MaHdn", "MaHdn", chiTietHdn.MaHdn);
+            ViewData["MaSp"] = new SelectList(_context.SanPhams.ToList(), "MaSp", "MaSp", chiTietHdn.MaSp);
             return View(chiTietHdn);
         }
 
@@ -95,13 +97,8 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MaHdn,MaSp,Slnhap")] ChiTietHdn chiTietHdn)
+        public async Task<IActionResult> Edit(string mahdn, string masp, [Bind("MaHdn,MaSp,Slnhap")] ChiTietHdn chiTietHdn)
         {
-            if (id != chiTietHdn.MaHdn)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
@@ -120,25 +117,22 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                _notyfService.Success("Sửa thành công");
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaHdn"] = new SelectList(_context.HoaDonNhaps, "MaHdn", "MaHdn", chiTietHdn.MaHdn);
-            ViewData["MaSp"] = new SelectList(_context.SanPhams, "MaSp", "MaSp", chiTietHdn.MaSp);
+            ViewData["MaHdn"] = new SelectList(_context.HoaDonNhaps.ToList(), "MaHdn", "MaHdn", chiTietHdn.MaHdn);
+            ViewData["MaSp"] = new SelectList(_context.SanPhams.ToList(), "MaSp", "MaSp", chiTietHdn.MaSp);
+            _notyfService.Error("Sửa không thành công");
             return View(chiTietHdn);
         }
 
         // GET: Admin/ImportOrderDetails/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string mahdn, string masp)
         {
-            if (id == null || _context.ChiTietHdns == null)
-            {
-                return NotFound();
-            }
-
             var chiTietHdn = await _context.ChiTietHdns
                 .Include(c => c.MaHdnNavigation)
                 .Include(c => c.MaSpNavigation)
-                .FirstOrDefaultAsync(m => m.MaHdn == id);
+                .FirstOrDefaultAsync(m => m.MaHdn == mahdn && m.MaSp == masp);
             if (chiTietHdn == null)
             {
                 return NotFound();
@@ -150,19 +144,19 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         // POST: Admin/ImportOrderDetails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(string mahdn, string masp)
         {
             if (_context.ChiTietHdns == null)
             {
                 return Problem("Entity set 'BanDoDienTuContext.ChiTietHdns'  is null.");
             }
-            var chiTietHdn = await _context.ChiTietHdns.FindAsync(id);
+            var chiTietHdn = _context.ChiTietHdns.FirstOrDefault(x => x.MaHdn == mahdn && x.MaSp == masp);
             if (chiTietHdn != null)
             {
                 _context.ChiTietHdns.Remove(chiTietHdn);
-            }
-            
+            }      
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 
