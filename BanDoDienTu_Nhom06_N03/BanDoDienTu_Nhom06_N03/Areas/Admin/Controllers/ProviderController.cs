@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BanDoDienTu_Nhom06_N03.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 {
@@ -14,9 +15,12 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
     {
         private readonly BanDoDienTuContext _context;
 
-        public ProviderController(BanDoDienTuContext context)
+        public INotyfService _notyfService { get; }
+
+        public ProviderController(BanDoDienTuContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService= notyfService;
         }
 
         // GET: Admin/Provider
@@ -60,9 +64,17 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(nhaCungCap);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if(_context.NhaCungCaps.FirstOrDefault(x => x.MaNcc == nhaCungCap.MaNcc) == null)
+                {
+                    _context.Add(nhaCungCap);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Thêm thành công");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notyfService.Error("Mã nhà cung cấp đã tồn tại");
+                }
             }
             return View(nhaCungCap);
         }
@@ -113,8 +125,10 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                _notyfService.Success("Sửa thành công");
                 return RedirectToAction(nameof(Index));
             }
+            _notyfService.Error("Sửa không thành công");
             return View(nhaCungCap);
         }
 
@@ -145,14 +159,24 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'BanDoDienTuContext.NhaCungCaps'  is null.");
             }
-            var nhaCungCap = await _context.NhaCungCaps.FindAsync(id);
-            if (nhaCungCap != null)
+            var hdn = _context.HoaDonNhaps.FirstOrDefault(x => x.MaNcc == id);
+            if(hdn == null)
             {
-                _context.NhaCungCaps.Remove(nhaCungCap);
+                var nhaCungCap = await _context.NhaCungCaps.FindAsync(id);
+                if (nhaCungCap != null)
+                {
+                    _context.NhaCungCaps.Remove(nhaCungCap);
+                }
+
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xóa thành công");
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                _notyfService.Error("Xóa không thành công");
+            }
+            return RedirectToAction(nameof(Delete));
         }
 
         private bool NhaCungCapExists(string id)

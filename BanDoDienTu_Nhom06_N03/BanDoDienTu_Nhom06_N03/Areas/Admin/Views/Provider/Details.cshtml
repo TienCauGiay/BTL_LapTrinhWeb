@@ -5,33 +5,30 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>NhaCungCap</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenNcc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenNcc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sdtncc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sdtncc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiaChiNcc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DiaChiNcc)
-        </dd>
-    </dl>
+<div class="col-md-9">
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>Mã nhà cung cấp</td>
+                <td>@Html.DisplayFor(model => model.MaNcc)</td>
+            </tr>
+            <tr>
+                <td>Tên nhà cung cấp</td>
+                <td>@Html.DisplayFor(model => model.TenNcc)</td>
+            </tr>
+            <tr>
+                <td>Số điện thoại</td>
+                <td>@Html.DisplayFor(model => model.Sdtncc)</td>
+            </tr>
+            <tr>
+                <td>Địa chỉ</td>
+                <td>@Html.DisplayFor(model => model.DiaChiNcc)</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+<br />
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaNcc">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.MaNcc">Sửa</a> |
     <a asp-action="Index">Back to List</a>
 </div>

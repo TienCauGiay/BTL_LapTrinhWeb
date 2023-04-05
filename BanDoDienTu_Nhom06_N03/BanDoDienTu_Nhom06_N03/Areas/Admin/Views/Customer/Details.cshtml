@@ -5,9 +5,13 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="col-md-6">
+<div class="col-md-9">
     <table class="table table-striped">
         <tbody>
+            <tr>
+                <td>Mã khách hàng</td>
+                <td>@Html.DisplayFor(model => model.MaKh)</td>
+            </tr>
             <tr>
                 <td>Tên khách hàng</td>
                 <td>@Html.DisplayFor(model => model.TenKh)</td>

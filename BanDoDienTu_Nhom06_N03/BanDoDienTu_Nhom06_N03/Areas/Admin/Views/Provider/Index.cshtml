@@ -5,44 +5,42 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh sách nhà cung cấp</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm nhà cung cấp mới</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-bordered" style="border:5px solid white;">
+    <thead style="border:5px solid white;">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TenNcc)
+                ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sdtncc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaChiNcc)
+                Tên nhà cung cấp
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenNcc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sdtncc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiaChiNcc)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaNcc">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaNcc">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaNcc">Delete</a>
-            </td>
-        </tr>
-}
+    <tbody style="border:5px solid white;">
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.MaNcc
+                    </td>
+                    <td>
+                        @item.TenNcc
+                    </td>
+                    <td>
+                        <a class="btn btn-inverse-info btn-tone m-r-5" asp-area="Admin" asp-controller="Provider" asp-action="Details" asp-route-id="@item.MaNcc">Chi tiết</a>
+                        <a class="btn btn-inverse-success btn-tone m-r-5" asp-area="Admin" asp-controller="Provider" asp-action="Edit" asp-route-id="@item.MaNcc">Sửa</a>
+                        <a class="btn btn-inverse-dark btn-tone m-r-5" asp-area="Admin" asp-controller="Provider" asp-action="Delete" asp-route-id="@item.MaNcc">Xóa</a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
