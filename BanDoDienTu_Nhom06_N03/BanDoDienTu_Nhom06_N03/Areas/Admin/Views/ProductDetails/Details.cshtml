@@ -1,0 +1,67 @@
+﻿@model BanDoDienTu_Nhom06_N03.Models.ChiTietSp
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ChiTietSp</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TrongLuong)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TrongLuong)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BoNho)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BoNho)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HeDieuHanh)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HeDieuHanh)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Camera)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Camera)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BaoHanh)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BaoHanh)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.KichThuoc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.KichThuoc)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MoTa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MoTa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Pin)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Pin)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.MaSp">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

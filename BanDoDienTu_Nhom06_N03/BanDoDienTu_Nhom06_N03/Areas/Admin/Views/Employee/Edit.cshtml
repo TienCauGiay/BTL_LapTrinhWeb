@@ -1,0 +1,52 @@
+﻿@model BanDoDienTu_Nhom06_N03.Models.NhanVien
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>NhanVien</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaNv" />
+            <div class="form-group">
+                <label asp-for="HoTen" class="control-label"></label>
+                <input asp-for="HoTen" class="form-control" />
+                <span asp-validation-for="HoTen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgaySinh" class="control-label"></label>
+                <input asp-for="NgaySinh" class="form-control" />
+                <span asp-validation-for="NgaySinh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sdtnv" class="control-label"></label>
+                <input asp-for="Sdtnv" class="form-control" />
+                <span asp-validation-for="Sdtnv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GioiTinh" class="control-label"></label>
+                <input asp-for="GioiTinh" class="form-control" />
+                <span asp-validation-for="GioiTinh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiaChiNv" class="control-label"></label>
+                <input asp-for="DiaChiNv" class="form-control" />
+                <span asp-validation-for="DiaChiNv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
