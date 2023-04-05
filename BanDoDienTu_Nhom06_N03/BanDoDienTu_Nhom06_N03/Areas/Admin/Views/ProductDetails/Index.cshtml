@@ -1,78 +1,58 @@
-﻿@model IEnumerable<BanDoDienTu_Nhom06_N03.Models.ChiTietSp>
+﻿@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<ChiTietSp>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Chi tiết sản phẩm</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm chi tiết sản phẩm</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-bordered" style="border:5px solid white;">
+    <thead style="border:5px solid white;">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TrongLuong)
+                ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BoNho)
+                Trọng lượng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HeDieuHanh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Camera)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BaoHanh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.KichThuoc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MoTa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pin)
+                Kích thước
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrongLuong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BoNho)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HeDieuHanh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Camera)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BaoHanh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.KichThuoc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MoTa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pin)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaSp">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaSp">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaSp">Delete</a>
-            </td>
-        </tr>
-}
+    <tbody style="border:5px solid white;">
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.MaSp
+                    </td>
+                    <td>
+                        @item.TrongLuong gam
+                    </td>
+                    <td>
+                        @item.KichThuoc
+                    </td>
+                    <td>
+                        <a class="btn btn-inverse-info btn-tone m-r-5" asp-area="Admin" asp-controller="ProductDetails" asp-action="Details" asp-route-id="@item.MaSp">Chi tiết</a>
+                        <a class="btn btn-inverse-success btn-tone m-r-5" asp-area="Admin" asp-controller="ProductDetails" asp-action="Edit" asp-route-id="@item.MaSp">Sửa</a>
+                        <a class="btn btn-inverse-dark btn-tone m-r-5" asp-area="Admin" asp-controller="ProductDetails" asp-action="Delete" asp-route-id="@item.MaSp">Xóa</a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
+<br />
+@Html.PagedListPager(Model,page => Url.Action("Index", new {page=page}),new X.PagedList.Web.Common.PagedListRenderOptions(){
+	LiElementClasses = new List<String> {"page-item"},
+	PageClasses = new List<String> {"page-link"}
+})

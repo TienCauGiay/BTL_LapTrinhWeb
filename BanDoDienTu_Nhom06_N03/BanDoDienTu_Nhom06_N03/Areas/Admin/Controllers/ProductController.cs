@@ -73,6 +73,7 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             {
                 _context.Add(sanPham);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("Thêm sản phẩm thành công");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MaDm"] = new SelectList(_context.DanhMucs, "MaDm", "MaDm", sanPham.MaDm);
@@ -128,10 +129,12 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                _notyfService.Success("Sửa thành công");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MaDm"] = new SelectList(_context.DanhMucs, "MaDm", "MaDm", sanPham.MaDm);
             ViewData["MaSp"] = new SelectList(_context.ChiTietSps, "MaSp", "MaSp", sanPham.MaSp);
+            _notyfService.Error("Sửa không thành công");
             return View(sanPham);
         }
 
@@ -191,6 +194,7 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 

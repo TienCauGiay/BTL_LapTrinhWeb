@@ -5,63 +5,45 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>ChiTietSp</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrongLuong)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrongLuong)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BoNho)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BoNho)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HeDieuHanh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HeDieuHanh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Camera)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Camera)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaoHanh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaoHanh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.KichThuoc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.KichThuoc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MoTa)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MoTa)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pin)
-        </dd>
-    </dl>
+<div class="col-md-6">
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>Trọng lượng</td>
+                <td>@Html.DisplayFor(model => model.TrongLuong)</td>
+            </tr>
+            <tr>
+                <td>Bộ nhớ</td>
+                <td>@Html.DisplayFor(model => model.BoNho)</td>
+            </tr>
+            <tr>
+                <td>Hệ điều hành</td>
+                <td>@Html.DisplayFor(model => model.HeDieuHanh)</td>
+            </tr>
+            <tr>
+                <td>Camera</td>
+                <td>@Html.DisplayFor(model => model.Camera)</td>
+            </tr>
+            <tr>
+                <td>Bảo hành</td>
+                <td>@Html.DisplayFor(model => model.BaoHanh)</td>
+            </tr>
+            <tr>
+                <td>Kích thước</td>
+                <td>@Html.DisplayFor(model => model.KichThuoc)</td>
+            </tr>
+            <tr>
+                <td>Mô tả</td>
+                <td>@Html.DisplayFor(model => model.MoTa)</td>
+            </tr>
+            <tr>
+                <td>Pin</td>
+                <td>@Html.DisplayFor(model => model.Pin)</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaSp">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.MaSp">Sửa</a> |
     <a asp-action="Index">Back to List</a>
 </div>
