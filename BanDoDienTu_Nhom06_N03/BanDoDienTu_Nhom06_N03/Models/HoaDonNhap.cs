@@ -17,7 +17,7 @@ public partial class HoaDonNhap
 
     public virtual ICollection<ChiTietHdn> ChiTietHdns { get; } = new List<ChiTietHdn>();
 
-    public virtual NhaCungCap MaNccNavigation { get; set; } = null!;
+    public virtual NhaCungCap? MaNccNavigation { get; set; } = null!;
 
-    public virtual NhanVien MaNvNavigation { get; set; } = null!;
+    public virtual NhanVien? MaNvNavigation { get; set; } = null!;
 }
