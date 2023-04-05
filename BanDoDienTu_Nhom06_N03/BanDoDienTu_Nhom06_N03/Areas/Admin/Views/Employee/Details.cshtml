@@ -5,45 +5,37 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>NhanVien</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoTen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HoTen)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgaySinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgaySinh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sdtnv)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sdtnv)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GioiTinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GioiTinh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiaChiNv)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DiaChiNv)
-        </dd>
-    </dl>
+<div class="col-md-9">
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>Mã nhân viên</td>
+                <td>@Html.DisplayFor(model => model.MaNv)</td>
+            </tr>
+            <tr>
+                <td>Tên nhân viên</td>
+                <td>@Html.DisplayFor(model => model.HoTen)</td>
+            </tr>
+            <tr>
+                <td>Ngày sinh</td>
+                <td>@(Model.NgaySinh.HasValue ? Model.NgaySinh.Value.ToString("dd/MM/yyyy") : "Trống")</td>
+            </tr>
+            <tr>
+                <td>Số điện thoại</td>
+                <td>@Html.DisplayFor(model => model.Sdtnv)</td>
+            </tr>
+            <tr>
+                <td>Giới tính</td>
+                <td>@Html.DisplayFor(model => model.GioiTinh)</td>
+            </tr>
+            <tr>
+                <td>Địa chỉ</td>
+                <td>@Html.DisplayFor(model => model.DiaChiNv)</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaNv">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.MaNv">Sửa</a> |
     <a asp-action="Index">Back to List</a>
 </div>

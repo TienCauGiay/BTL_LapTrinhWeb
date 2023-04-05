@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BanDoDienTu_Nhom06_N03.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using X.PagedList;
 
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 {
@@ -14,17 +16,22 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
     {
         private readonly BanDoDienTuContext _context;
 
-        public EmployeeController(BanDoDienTuContext context)
+        public INotyfService _notyfService { get; }
+
+        public EmployeeController(BanDoDienTuContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService= notyfService;
         }
 
         // GET: Admin/Employee
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.NhanViens != null ? 
-                          View(await _context.NhanViens.ToListAsync()) :
-                          Problem("Entity set 'BanDoDienTuContext.NhanViens'  is null.");
+            int pageSize = 10;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var listEmplyee = _context.NhanViens.ToList();
+            PagedList<NhanVien> res = new PagedList<NhanVien>(listEmplyee, pageNumber, pageSize);
+            return View(res);
         }
 
         // GET: Admin/Employee/Details/5
@@ -60,9 +67,17 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(nhanVien);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (_context.NhanViens.FirstOrDefault(x => x.MaNv == nhanVien.MaNv) == null)
+                {
+                    _context.Add(nhanVien);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Thêm mới nhân viên thành công");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notyfService.Error("Mã nhân viên đã tồn tại");
+                }
             }
             return View(nhanVien);
         }
@@ -113,8 +128,10 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                _notyfService.Success("Sửa thành công");
                 return RedirectToAction(nameof(Index));
             }
+            _notyfService.Error("Sửa không thành công");
             return View(nhanVien);
         }
 
@@ -145,6 +162,14 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'BanDoDienTuContext.NhanViens'  is null.");
             }
+            var hdn = _context.HoaDonNhaps.FirstOrDefault(x => x.MaNv == id);
+            var hdb = _context.HoaDonBans.FirstOrDefault(x => x.MaNv == id);
+            if(hdn != null || hdb != null)
+            {
+                _notyfService.Error("Không thể xóa nhân viên này");
+                return RedirectToAction(nameof(Delete));
+            }
+
             var nhanVien = await _context.NhanViens.FindAsync(id);
             if (nhanVien != null)
             {
@@ -152,6 +177,7 @@ namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 
