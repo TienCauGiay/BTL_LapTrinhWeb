@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using BanDoDienTu_Nhom06_N03.Models;
+using BanDoDienTu_Nhom06_N03.Models.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using X.PagedList;
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authentication]
     public class OrderController : Controller
     {
         private readonly BanDoDienTuContext _context;

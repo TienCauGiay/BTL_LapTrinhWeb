@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Nancy.Json;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using BanDoDienTu_Nhom06_N03.Models.Authentication;
 
 namespace BanDoDienTu_Nhom06_N03.Controllers
 {
+    [Authentication]
     public class CartController : Controller
     {
         BanDoDienTuContext _context = null;

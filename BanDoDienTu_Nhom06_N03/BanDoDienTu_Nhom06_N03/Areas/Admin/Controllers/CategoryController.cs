@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using BanDoDienTu_Nhom06_N03.Models;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using X.PagedList;
+using BanDoDienTu_Nhom06_N03.Models.Authentication;
 
 namespace BanDoDienTu_Nhom06_N03.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authentication]
     public class CategoryController : Controller
     {
         private readonly BanDoDienTuContext _context;

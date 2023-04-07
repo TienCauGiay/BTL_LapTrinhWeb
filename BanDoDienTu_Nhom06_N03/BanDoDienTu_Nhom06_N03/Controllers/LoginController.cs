@@ -26,6 +26,7 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             }
             else
             {
+
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -118,6 +119,11 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
                 _notyfService.Success("Đổi mật khẩu thành công");
                 return RedirectToAction("Index");
             }
+        }
+
+        public IActionResult NoRolesAdmin()
+        {
+            return View();
         }
     }
 }
