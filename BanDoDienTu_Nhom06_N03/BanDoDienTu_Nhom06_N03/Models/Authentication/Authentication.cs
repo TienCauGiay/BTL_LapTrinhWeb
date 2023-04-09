@@ -32,26 +32,6 @@ namespace BanDoDienTu_Nhom06_N03.Models.Authentication
                         {"Action", "NoRolesAdmin" }
                     });
                 }
-                //if (currentRoute.Contains("/Admin") && dangNhap.RoleId == "admin")
-                //{
-                //    context.Result = new RedirectToRouteResult(
-                //    new RouteValueDictionary
-                //    {
-                //        {"Area", "Admin" },
-                //        {"Controller", "Home" },
-                //        {"Action", "Index" }
-                //    });
-                //}
-                //if (!currentRoute.Contains("/Admin"))
-                //{
-                //    context.Result = new RedirectToRouteResult(
-                //    new RouteValueDictionary
-                //    {
-                //        {"Area", "" },
-                //        {"Controller", "Home" },
-                //        {"Action", "Index" }
-                //    });
-                //}
             }
         }
     }
