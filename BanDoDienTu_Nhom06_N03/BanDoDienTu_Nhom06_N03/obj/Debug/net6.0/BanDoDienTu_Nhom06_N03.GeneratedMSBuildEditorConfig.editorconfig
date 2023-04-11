@@ -268,6 +268,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Cart/ConfirmOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDb25maXJtT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Views/Cart/ConfirmPayment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDb25maXJtUGF5bWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

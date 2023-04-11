@@ -148,6 +148,7 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             }
             string taiKhoan = HttpContext.Session.GetString("UserName");
             string id = taiKhoan + DateTime.Now.ToString();
+            id = id.Replace("/", "");
             if (id.Length > 19) id = id.Substring(0, 19);
             if (_context.HoaDonBans.FirstOrDefault(x => x.MaHdb == id) != null) id += "1";
             var order = new HoaDonBan();
@@ -177,7 +178,7 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
                         _notyfService.Error("Số lượng sản phẩm tại cửa hàng không đủ");
                     }
                 }
-                HttpContext.Session.Remove("GIOHANG");
+                HttpContext.Session.Remove(GIOHANG);
                 _notyfService.Success("Đặt hàng thành công");
             }
             catch (Exception ex)
@@ -199,6 +200,22 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             _context.KhachHangs.Update(kh);
             _context.SaveChanges();
             return RedirectToAction("Payment");
+        }
+
+        public IActionResult ConfirmOrder()
+        {
+            var hdb = _context.HoaDonBans.Where(x => x.MaNv == "robot").ToList();
+            return View(hdb);
+        }
+
+        public IActionResult ConfirmOrders(string id)
+        {
+            var hdb = _context.HoaDonBans.FirstOrDefault(x => x.MaHdb == id.Trim());
+            string taiKhoan = HttpContext.Session.GetString("UserName");
+            hdb.MaNv = taiKhoan;
+            _context.HoaDonBans.Update(hdb);
+            _context.SaveChanges();
+            return RedirectToAction("ConfirmOrder");
         }
     }
 }

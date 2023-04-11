@@ -53,8 +53,13 @@
                             <a asp-controller="Home" asp-action="Contact" class="nav-item nav-link">Liên hệ</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
-                            @if (!string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("UserName")))
+                            @if(!string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("UserName")))
                             {
+                                var dangNhap = new BanDoDienTuContext().DangNhaps.FirstOrDefault(x => x.TaiKhoan == HttpContextAccessor.HttpContext.Session.GetString("UserName"));
+                                @if(dangNhap.RoleId == "staff")
+                                {
+                                    <a asp-controller="Cart" asp-action="ConfirmOrder" class="nav-item nav-link">Xác nhận đơn hàng</a>
+                                }
                                 <a asp-controller="Login" asp-action="Logout" class="nav-item nav-link">Đăng xuất</a>
                             }
                             else

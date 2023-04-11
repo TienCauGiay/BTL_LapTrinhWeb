@@ -1,0 +1,42 @@
+﻿@model List<HoaDonBan>
+@{
+    ViewData["Title"] = "ConfirmOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-10" style="margin: 0 auto;">
+        <table class="table table-primary table-hover">
+            <thead>
+                <tr>
+                    <th>Mã hóa đơn</th>
+                    <th>Ngày bán</th>
+                    <th>Tổng tiền</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaHdb</td>
+                        <td>@(item.NgayBan.HasValue ? item.NgayBan.Value.ToString("dd/MM/yyyy") : "Liên hệ shop") </td>
+                        <td>@item.TongTien</td>
+                        <td>
+                                <a asp-controller="Cart" asp-action="ConfirmOrders" asp-route-id="@item.MaHdb">Xác nhận</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-danger">Chưa có đơn hàng nào</p>
+}
+
+
+
