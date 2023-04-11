@@ -44,12 +44,12 @@
                                 <td class="align-middle">
                                     <div class="input-group quantity mx-auto" style="width: 100px;">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-minus" data-id="@item.Product.MaSp">
+                                            <button class="btn btn-sm btn-primary btn-minus tru" data-id="@item.Product.MaSp">
                                                 <i class="fa fa-minus btn-minus"></i>
                                             </button>
                                         </div>
                                         <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" data-price="@item.Product.GiaSp.GetValueOrDefault(0)" value="@item.Quantity">                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-plus" data-id="@item.Product.MaSp">
+                                            <button class="btn btn-sm btn-primary btn-plus cong" data-id="@item.Product.MaSp">
                                                 <i class="fa fa-plus btn-plus"></i>
                                             </button>
                                         </div>
@@ -94,6 +94,54 @@
 
             var id = $(this).data('id');
             var url = '@Url.Action("Remove", "Cart")';
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: { id: id },
+                success: function (result) {
+                    // Refresh cart
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        $('.tru').click(function (e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+            var url = '@Url.Action("MinusProduct", "Cart")';
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: { id: id },
+                success: function (result) {
+                    // Refresh cart
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        $('.cong').click(function (e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+            var url = '@Url.Action("PlusProduct", "Cart")';
 
             $.ajax({
                 type: 'POST',

@@ -108,6 +108,44 @@ namespace BanDoDienTu_Nhom06_N03.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult MinusProduct(string id)
+        {
+            var giohang = HttpContext.Session.GetString(GIOHANG) ?? string.Empty;
+            var cart = JsonConvert.DeserializeObject<List<CartItem>>(giohang);
+            if (cart != null)
+            {
+                var itemMinus = cart.SingleOrDefault(item => item.Product.MaSp == id);
+                if (itemMinus != null)
+                {
+                    itemMinus.Quantity -= 1;
+                    if (itemMinus.Quantity <= 0) itemMinus.Quantity = 1;
+
+                    var cartJson = JsonConvert.SerializeObject(cart);
+                    HttpContext.Session.SetString(GIOHANG, cartJson);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult PlusProduct(string id)
+        {
+            var giohang = HttpContext.Session.GetString(GIOHANG) ?? string.Empty;
+            var cart = JsonConvert.DeserializeObject<List<CartItem>>(giohang);
+            if (cart != null)
+            {
+                var itemMinus = cart.SingleOrDefault(item => item.Product.MaSp == id);
+                if (itemMinus != null)
+                {
+                    itemMinus.Quantity += 1;
+                    if (itemMinus.Quantity <= 0) itemMinus.Quantity = 1;
+
+                    var cartJson = JsonConvert.SerializeObject(cart);
+                    HttpContext.Session.SetString(GIOHANG, cartJson);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public IActionResult Payment()
         {
