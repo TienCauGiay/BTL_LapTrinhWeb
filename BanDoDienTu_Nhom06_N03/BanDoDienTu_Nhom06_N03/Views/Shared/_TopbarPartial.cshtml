@@ -1,4 +1,14 @@
-﻿<div class="container-fluid">
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json;
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var giohang = HttpContextAccessor.HttpContext.Session.GetString("GIOHANG") ?? string.Empty;
+    var cart = JsonConvert.DeserializeObject<List<CartItem>>(giohang);
+}
+
+<div class="container-fluid">
     <div class="row bg-secondary py-2 px-xl-5">
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center">
@@ -53,7 +63,14 @@
             </a>
             <a asp-controller="Cart" asp-action="Index" class="btn border">
                 <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge">0</span>
+                @if (cart == null)
+                {
+                    <span class="badge">0</span>
+                }
+                else
+                {
+                    <span class="badge">@cart.Count</span>
+                }
             </a>
         </div>
     </div>
