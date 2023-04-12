@@ -24,7 +24,19 @@
                 </tr>
                 <tr>
                     <td>Trạng thái</td>
-                    <td>@Model.Status</td>
+                    <td>
+                        @{
+                            var status = Model.Status.HasValue ? Model.Status.Value : false;
+                        }
+                        @if (status)
+                        {
+                            <span>Hoạt động</span>
+                        }
+                        else
+                        {
+                            <span>Không hoạt động</span>
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td>Ngày tạo</td>

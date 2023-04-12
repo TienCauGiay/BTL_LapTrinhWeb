@@ -57,13 +57,17 @@
                         }
                     </td>
                     <td>
-                        @if (item.RoleId == "1")
+                        @if (item.RoleId == "admin")
                         {
                             <span>Admin</span>
                         }
-                        else
+                        else if(item.RoleId == "staff")
                         {
                             <span>Nhân viên</span>
+                        }
+                        else
+                        {
+                            <span>Khách hàng</span>
                         }
                     </td>
                     <td>
