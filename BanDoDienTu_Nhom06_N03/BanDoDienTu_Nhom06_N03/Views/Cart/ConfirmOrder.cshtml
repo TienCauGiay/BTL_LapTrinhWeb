@@ -22,7 +22,7 @@
                     <tr>
                         <td>@item.MaHdb</td>
                         <td>@(item.NgayBan.HasValue ? item.NgayBan.Value.ToString("dd/MM/yyyy") : "Liên hệ shop") </td>
-                        <td>@item.TongTien</td>
+                        <td>@item.TongTien.Value.ToString("N0") đ</td>
                         <td>
                                 <a asp-controller="Cart" asp-action="ConfirmOrders" asp-route-id="@item.MaHdb">Xác nhận</a>
                         </td>

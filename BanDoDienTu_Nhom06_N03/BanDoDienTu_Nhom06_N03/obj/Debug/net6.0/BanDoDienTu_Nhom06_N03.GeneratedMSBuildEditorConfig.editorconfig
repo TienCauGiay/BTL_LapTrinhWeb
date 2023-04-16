@@ -76,6 +76,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Areas/Admin/Views/DoanhThu/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRG9hbmhUaHVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Areas/Admin/Views/DoanhThu/TinhDoanhThu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRG9hbmhUaHVcVGluaERvYW5oVGh1LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [F:/DHGTVT/LapTrinhWeb/BaiTapLon/BanDoDienTu_Nhom06_N03/BanDoDienTu_Nhom06_N03/Areas/Admin/Views/Employee/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRW1wbG95ZWVcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "TinhDoanhThu";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("TinhDoanhThu", "DoanhThu", FormMethod.Get))
+{
+    <div class="form-group">
+        <label>Tháng:</label>
+        @Html.TextBox("month", null, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Năm:</label>
+        @Html.TextBox("year", null, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Tính doanh thu</button>
+}
+
+@if (ViewBag.DoanhThu != null)
+{
+    <h4>Doanh thu: @ViewBag.DoanhThu</h4>
+}
+
